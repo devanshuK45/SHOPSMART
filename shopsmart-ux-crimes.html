@@ -1,0 +1,2826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShopSmart™ — Premium Brainrot Shopping!</title>
+<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Lobster&family=Bangers&family=Impact&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #ff5500;
+  --sec: #00e5ff;
+  --danger: #ff0055;
+  --bg: #fffde7;
+  --font-main: 'Comic Neue', cursive;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+@keyframes screenShake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(0px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(2px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(2px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg);
+  background-image: repeating-linear-gradient(45deg, rgba(255,85,0,.05) 0, rgba(255,85,0,.05) 2px, transparent 2px, transparent 12px);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: filter 0.3s, transform 0.5s;
+}
+
+body.shaking {
+  animation: screenShake 0.15s infinite;
+}
+
+body.inverted {
+  transform: rotate(180deg);
+}
+
+.page { display: none; min-height: 100vh; }
+.page.active { display: block; }
+
+/* ── NAVIGATION ── */
+nav {
+  background: var(--primary);
+  color: #fff;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 6px 0 #b33c00;
+}
+.logo {
+  font-family: 'Lobster', cursive;
+  font-size: 32px;
+  cursor: pointer;
+  user-select: none;
+  animation: logoWobble 1.5s infinite alternate;
+}
+@keyframes logoWobble {
+  0% { transform: rotate(-5deg) scale(1); }
+  100% { transform: rotate(5deg) scale(1.1); }
+}
+.logo span { color: #fff176; text-shadow: 2px 2px #000; }
+.nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+.nav-links button {
+  color: #fff;
+  background: none;
+  border: 3px dashed rgba(255,255,255,.8);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-weight: bold;
+  transition: all .2s;
+}
+.nav-links button:hover, .nav-links button.anav {
+  background: #fff;
+  color: var(--primary);
+  border-style: solid;
+  border-color: #fff;
+  transform: scale(1.1) rotate(2deg);
+}
+.cart-btn {
+  background: #fff176;
+  color: #111;
+  border: 3px solid #111;
+  padding: 8px 18px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-weight: 900;
+  font-size: 14px;
+  position: relative;
+  box-shadow: 3px 3px 0 #000;
+  transition: transform 0.1s;
+}
+.cart-btn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #000; }
+.cc-badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: var(--danger);
+  color: #fff;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border: 2px solid #000;
+}
+
+/* ── FAKE ANNOYING MARQUEE ── */
+.fake-ad {
+  background: repeating-linear-gradient(90deg, #ffeb3b, #ffeb3b 20px, #ff9800 20px, #ff9800 40px);
+  padding: 8px 0;
+  font-size: 14px;
+  font-weight: 900;
+  color: #000;
+  overflow: hidden;
+  white-space: nowrap;
+  border-bottom: 3px solid #000;
+}
+.mi {
+  display: inline-block;
+  animation: mq 10s linear infinite;
+}
+@keyframes mq {
+  from { transform: translateX(100vw); }
+  to { transform: translateX(-100%); }
+}
+
+.nb {
+  background: #e3f2fd;
+  border-bottom: 3px solid var(--sec);
+  padding: 8px 20px;
+  font-size: 13px;
+  color: #0d47a1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+}
+.nd {
+  width: 10px;
+  height: 10px;
+  background: var(--sec);
+  border-radius: 50%;
+  animation: pls 0.5s infinite alternate;
+  flex-shrink: 0;
+}
+@keyframes pls { from { transform: scale(0.6); opacity: 0.2; } to { transform: scale(1.2); opacity: 1; } }
+
+/* ── HERO SECTION ── */
+.hero {
+  text-align: center;
+  padding: 40px 20px 20px;
+  background: linear-gradient(135deg, #ff5500, #ffaa00);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 4px solid #000;
+}
+.hero h1 {
+  font-family: 'Lobster', cursive;
+  font-size: 52px;
+  text-shadow: 4px 4px 0 #b33c00;
+}
+.hero p { font-size: 16px; margin-top: 8px; font-weight: bold; }
+.hero-badge {
+  display: inline-block;
+  background: #fff176;
+  color: #333;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 13px;
+  margin-top: 12px;
+  border: 3px dashed #000;
+  animation: wob 0.8s infinite;
+}
+@keyframes wob { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg) scale(1.05); } }
+
+/* ── MANDATORY SOUND TRIGGER WARNING ── */
+.sound-banner {
+  background: #e0f7fa;
+  border: 3px solid #00838f;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  color: #006064;
+  margin: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  animation: pulseBg 1.5s infinite alternate;
+}
+@keyframes pulseBg {
+  from { background-color: #e0f7fa; }
+  to { background-color: #b2ebf2; }
+}
+
+/* ── PRODUCT DISPLAY ── */
+.section-title {
+  text-align: center;
+  padding: 24px 0 8px;
+  font-family: 'Lobster', cursive;
+  font-size: 36px;
+  color: #222;
+  text-shadow: 2px 2px 0 #fff;
+}
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 10px 20px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.product-card {
+  background: #fff;
+  border-radius: 20px;
+  border: 3px solid #222;
+  padding: 16px;
+  text-align: center;
+  transition: transform .2s, box-shadow .2s;
+  box-shadow: 6px 6px 0 #222;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.product-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 10px 10px 0 #000;
+}
+.product-emoji {
+  font-size: 56px;
+  margin-bottom: 8px;
+  display: inline-block;
+  transition: transform 0.3s;
+}
+.product-card:hover .product-emoji {
+  transform: scale(1.3) rotate(15deg);
+}
+.product-name {
+  font-weight: bold;
+  font-size: 15px;
+  color: #111;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.product-price {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--primary);
+}
+.product-price .orig {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 13px;
+  margin-left: 5px;
+}
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--danger);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 3px 9px;
+  border-radius: 12px;
+  border: 2px solid #000;
+}
+.atc-btn {
+  margin-top: 12px;
+  width: 100%;
+  background: #4caf50;
+  color: #fff;
+  border: 3px solid #000;
+  border-radius: 24px;
+  padding: 8px;
+  font-family: var(--font-main);
+  font-weight: 900;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 3px 3px 0 #000;
+  transition: all 0.1s;
+}
+.atc-btn:hover {
+  background: #45a049;
+  transform: translateY(-2px);
+}
+.atc-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 #000;
+}
+
+/* ── OVERLAYS & POPUPS ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.75);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.overlay.active { display: flex; }
+.popup {
+  background: #fff;
+  border-radius: 24px;
+  border: 4px solid #000;
+  padding: 30px;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  box-shadow: 10px 10px 0 #000;
+  animation: pin .3s cubic-bezier(.175,.885,.32,1.275);
+}
+@keyframes pin {
+  from { transform: scale(.5) rotate(-10deg); opacity: 0; }
+  to { transform: scale(1) rotate(0); opacity: 1; }
+}
+.popup h2 {
+  font-family: 'Lobster', cursive;
+  font-size: 28px;
+  margin-bottom: 12px;
+  color: #111;
+}
+.popup p { font-size: 14px; color: #444; margin-bottom: 20px; line-height: 1.5; font-weight: bold; }
+.popup-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.bty {
+  background: #4caf50;
+  color: #fff;
+  border: 3px solid #000;
+  padding: 10px 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-weight: 900;
+  font-size: 14px;
+  box-shadow: 3px 3px 0 #000;
+}
+.bno {
+  background: var(--danger);
+  color: #fff;
+  border: 3px solid #000;
+  padding: 10px 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-weight: 900;
+  font-size: 14px;
+  box-shadow: 3px 3px 0 #000;
+}
+.bty:active, .bno:active { transform: translate(2px, 2px); box-shadow: 0 0 0 #000; }
+.popup-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 10px;
+  color: #bbb;
+  cursor: pointer;
+  background: none;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  padding: 2px 6px;
+  font-weight: bold;
+}
+.popup-close:hover { background: #eee; color: #333; }
+
+/* ── CART SIDEBAR ── */
+.cart-sidebar {
+  position: fixed;
+  right: -420px;
+  top: 0;
+  height: 100vh;
+  width: 400px;
+  background: #fff;
+  z-index: 350;
+  border-left: 5px solid #000;
+  box-shadow: -10px 0 30px rgba(0,0,0,.25);
+  transition: right 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+}
+.cart-sidebar.open { right: 0; }
+.cart-sidebar h2 { font-family: 'Lobster', cursive; font-size: 28px; margin-bottom: 15px; border-bottom: 3px solid #000; padding-bottom: 5px; }
+.ci-list { flex: 1; overflow-y: auto; padding-right: 5px; }
+.citem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 2px dashed #bbb;
+  position: relative;
+}
+.ci-emoji { font-size: 32px; }
+.ci-info { flex: 1; }
+.ci-name { font-weight: bold; font-size: 14px; color: #111; }
+.ci-price { color: var(--primary); font-size: 13px; font-weight: bold; }
+.ci-del {
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 4px;
+}
+.ci-del:hover { color: var(--danger); transform: scale(1.2); }
+.cart-total { padding-top: 15px; border-top: 3px solid #000; font-size: 20px; font-weight: 900; color: #111; }
+.co-area { margin-top: 15px; position: relative; min-height: 80px; }
+
+#cob {
+  background: #4caf50;
+  color: #fff;
+  border: 3px solid #000;
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-family: var(--font-main);
+  font-weight: 900;
+  font-size: 16px;
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  box-shadow: 4px 4px 0 #000;
+  transition: transform 0.05s;
+}
+.xc { position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer; background: none; border: none; color: #888; }
+.xc:hover { color: #000; transform: scale(1.2); }
+
+/* ── DOUBLE BRAINROT SUBWAY SURFERS MULTITASKING PANEL ── */
+#dopamine-panel {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 240px;
+  background: #fff;
+  border: 4px solid #000;
+  border-radius: 16px;
+  box-shadow: 8px 8px 0 #000;
+  z-index: 450;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.dopamine-header {
+  background: #ffeb3b;
+  color: #000;
+  padding: 6px;
+  font-size: 11px;
+  font-weight: 900;
+  text-align: center;
+  border-bottom: 3px solid #000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dopamine-gif {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+.dopamine-desc {
+  padding: 8px;
+  font-size: 10px;
+  font-weight: bold;
+  background: #fafafa;
+  text-align: center;
+}
+
+.trending { background: linear-gradient(90deg,#fff3e0,#fff9c4); border-top:3px solid #000; border-bottom:3px solid #000; }
+.trending button { border-radius:12px; padding:6px 10px; font-weight:900; }
+
+/* ── BRAINROT TSUNAMI WAVE ── */
+#tsunami-wave {
+  position: fixed;
+  top: 0;
+  left: -120%;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(90deg, rgba(0,229,255,0.85), rgba(0,85,255,0.95));
+  z-index: 1200;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #fff;
+  font-family: 'Impact', sans-serif;
+  text-shadow: 5px 5px 0 #000;
+  font-size: 64px;
+  box-shadow: 10px 0 50px rgba(0,0,0,0.5);
+  border-right: 20px solid #00e5ff;
+}
+.tsunami-emoji {
+  font-size: 150px;
+  animation: spinWave 2s linear infinite;
+}
+@keyframes spinWave { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* ── SPINNING CHIPI CHIPI CAT (REPLACED NINJA THIEF) ── */
+#tw {
+  position: fixed;
+  bottom: 80px;
+  left: -200px;
+  z-index: 950;
+  pointer-events: none;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+.cat-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px solid #ff0055;
+  background: #fff;
+  animation: bounceCat 0.5s infinite alternate;
+}
+@keyframes bounceCat {
+  from { transform: translateY(0) scaleY(1); }
+  to { transform: translateY(-20px) scaleY(0.9); }
+}
+#tb {
+  background: #fff176;
+  border: 3px solid #333;
+  border-radius: 12px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+  box-shadow: 3px 3px 0 #333;
+  margin-bottom: 8px;
+}
+
+/* ── PASSWORD SCREEN ── */
+#ps {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #0f0c1b;
+  z-index: 900;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #fff;
+  padding: 20px;
+  overflow-y: auto;
+}
+#ps.active { display: flex; }
+#ps h1 { font-family: 'Lobster', cursive; font-size: 36px; margin-bottom: 8px; color: #ffeb3b; }
+#ps > p { color: #aaa; font-size: 13px; margin-bottom: 18px; text-align: center; max-width: 320px; }
+.pr {
+  background: #1e1b2e;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  color: #ddd;
+  width: min(380px, 100%);
+  border: 2px solid #ff5500;
+}
+.pr h3 { color: #ffeb3b; margin-bottom: 8px; font-size: 14px; }
+.pr li { margin-bottom: 5px; list-style: none; display: flex; align-items: center; gap: 8px; }
+#pwi {
+  width: min(380px, 100%);
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 3px solid #ff5500;
+  background: #1e1b2e;
+  color: #fff;
+  font-family: var(--font-main);
+  font-size: 16px;
+  outline: none;
+}
+#pwe { color: #ff5252; font-size: 12px; margin-top: 8px; min-height: 18px; width: min(380px, 100%); text-align: center; font-weight: bold; }
+#pws {
+  margin-top: 12px;
+  background: #ff5500;
+  color: #fff;
+  border: 3px solid #000;
+  padding: 12px 36px;
+  border-radius: 30px;
+  font-family: var(--font-main);
+  font-weight: 900;
+  font-size: 15px;
+  cursor: pointer;
+  width: min(380px, 100%);
+  box-shadow: 4px 4px 0 #000;
+}
+#pws:active { transform: translate(2px, 2px); box-shadow: 0 0 0 #000; }
+#skip-pw {
+  margin-top: 8px;
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 11px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* ── CAPTCHA BOX ── */
+.cap-box { background: #eee; border: 3px solid #000; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 4px 4px 0 #888; }
+.cap-box p { font-size: 14px; color: #111; margin-bottom: 10px; font-weight: 900; }
+.cap-opts { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.co-opt {
+  padding: 8px 14px;
+  border: 3px solid #000;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-size: 13px;
+  background: #fff;
+  transition: all .1s;
+  user-select: none;
+  font-weight: bold;
+}
+.co-opt.sel { border-color: var(--primary); background: #fff3e0; transform: scale(1.08) rotate(-2deg); box-shadow: 3px 3px 0 #000; }
+
+/* ── VIRUS WINDOW ── */
+.vw {
+  background: #000;
+  color: #00ff66;
+  font-family: 'Courier New', monospace;
+  border: 4px solid #00ff66;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: left;
+  box-shadow: 0 0 40px #00ff66cc;
+}
+.vw h2 { color: #ff0055; font-size: 20px; margin-bottom: 12px; animation: blk .5s infinite; text-shadow: none; font-family: monospace; }
+@keyframes blk { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.vw pre { font-size: 11px; line-height: 1.8; margin-bottom: 12px; color: #00ff66; overflow-x: auto; }
+.sb { height: 10px; background: #222; border-radius: 5px; overflow: hidden; margin-bottom: 12px; border: 1px solid #444; }
+.sf { height: 100%; background: #ff0055; width: 100%; animation: sc 2.5s linear infinite; }
+@keyframes sc { from { width: 0; } to { width: 100%; } }
+
+/* ── LOADING SCREEN ── */
+#ls {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,.98);
+  z-index: 1500;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+#ls.active { display: flex; }
+#ls h2 { font-family: 'Lobster', cursive; font-size: 32px; color: #111; margin-bottom: 16px; }
+.lb { width: min(340px, 80vw); height: 24px; background: #ddd; border-radius: 12px; overflow: hidden; border: 3px solid #000; position: relative; }
+.lf { height: 100%; background: linear-gradient(90deg, var(--primary), #ffd600); width: 0%; border-radius: 12px; transition: width 0.3s; }
+.lb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,.5) 50%, transparent 100%);
+  animation: shim 1.5s infinite;
+}
+@keyframes shim { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
+#lt { margin-top: 15px; font-size: 13px; color: #555; font-style: italic; text-align: center; max-width: 300px; min-height: 24px; font-weight: bold; }
+.lm { font-size: 72px; margin-bottom: 15px; animation: spin 1.5s linear infinite; }
+@keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+.ldog { font-size: 48px; position: absolute; animation: lrun 3s linear infinite; }
+@keyframes lrun { from { left: -60px; transform: scaleX(1); } to { left: calc(100% + 60px); transform: scaleX(1); } }
+
+/* ── SUCCESS SCREEN ── */
+#scs {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+  z-index: 800;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px;
+}
+#scs.active { display: flex; }
+.confetti-wrap { font-size: 80px; animation: bnc 0.4s infinite alternate; display: flex; gap: 8px; }
+@keyframes bnc { from { transform: translateY(0); } to { transform: translateY(-24px); } }
+#scs h1 { font-family: 'Lobster', cursive; font-size: 48px; color: #2e7d32; margin-top: 16px; text-shadow: 2px 2px #fff; }
+#scs p { color: #333; font-size: 16px; margin-top: 8px; text-align: center; max-width: 400px; font-weight: bold; }
+#oid { font-size: 13px; color: #555; margin-top: 8px; font-family: monospace; font-weight: bold; background: #fff; padding: 4px 8px; border: 2px solid #2e7d32; border-radius: 4px; }
+.scs-btns { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; justify-content: center; }
+
+/* ── TOASTS ── */
+.tc { position: fixed; bottom: 20px; right: 20px; z-index: 1100; display: flex; flex-direction: column; gap: 8px; max-width: 320px; }
+.toast {
+  background: #333;
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 16px;
+  font-size: 13px;
+  animation: tin .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 4px 4px 0 #000;
+  border: 2px solid #000;
+  font-weight: bold;
+  word-break: break-word;
+}
+@keyframes tin { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+/* ── COOKIE CONSENT ── */
+.ck-base {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 300;
+  background: #ffe0b2;
+  border: 4px solid var(--primary);
+  border-radius: 20px;
+  padding: 18px;
+  max-width: 300px;
+  box-shadow: 8px 8px 0 #000;
+}
+.ck-base h3 { font-weight: 900; font-size: 16px; margin-bottom: 6px; }
+.ck-base p { font-size: 12px; color: #444; margin-bottom: 12px; line-height: 1.4; font-weight: bold; }
+.ck-btns { display: flex; gap: 8px; }
+.ck-acc { background: var(--primary); color: #fff; border: 3px solid #000; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-family: var(--font-main); font-size: 13px; font-weight: 900; box-shadow: 2px 2px 0 #000; }
+.ck-rej { background: #fff; color: #333; border: 3px solid #000; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-family: var(--font-main); font-size: 13px; font-weight: 900; box-shadow: 2px 2px 0 #000; }
+.ck-acc:active, .ck-rej:active { transform: translate(1px,1px); box-shadow: 0 0 0 #000; }
+.ck-child { position: fixed; background: #fff8f0; border: 3px solid var(--primary); border-radius: 12px; padding: 8px 16px; font-size: 13px; white-space: nowrap; box-shadow: 4px 4px 0 #000; cursor: pointer; z-index: 310; font-weight: bold; }
+#af { display: none; position: fixed; z-index: 320; background: var(--primary); color: #fff; padding: 10px 20px; border-radius: 25px; border: 3px solid #000; font-family: var(--font-main); font-weight: bold; font-size: 13px; cursor: pointer; box-shadow: 4px 4px 0 #000; white-space: nowrap; }
+
+/* ── PAGE 2: PRODUCT DETAIL ── */
+.det-cont { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
+.det-back { background: #fff; border: 3px solid var(--primary); color: var(--primary); padding: 8px 18px; border-radius: 25px; cursor: pointer; font-family: var(--font-main); font-weight: 900; font-size: 13px; margin-bottom: 20px; box-shadow: 3px 3px 0 #000; }
+.det-back:active { transform: translate(2px, 2px); box-shadow: 0 0 0 #000; }
+.det-card { background: #fff; border-radius: 24px; border: 4px solid #000; padding: 30px; box-shadow: 10px 10px 0 #000; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+@media(max-width: 650px) { .det-card { grid-template-columns: 1fr; } }
+.det-emo-wrap { display: flex; align-items: center; justify-content: center; background: #fff3e0; border-radius: 20px; border: 3px dashed var(--primary); min-height: 220px; font-size: 96px; animation: wob 1.5s infinite; }
+.det-info h2 { font-family: 'Lobster', cursive; font-size: 32px; color: #111; margin-bottom: 8px; }
+.det-price { font-size: 36px; font-weight: 900; color: var(--primary); margin: 8px 0; }
+.det-price .dorig { text-decoration: line-through; color: #aaa; font-size: 20px; margin-left: 8px; }
+.det-rating { color: #ffaa00; font-size: 18px; margin-bottom: 12px; font-weight: bold; }
+.det-desc { font-size: 14px; color: #555; line-height: 1.6; margin-bottom: 15px; font-weight: bold; }
+.det-specs { background: #f9f9f9; border-radius: 16px; border: 2px solid #eee; padding: 15px; margin-bottom: 15px; }
+.det-specs h4 { font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #222; border-bottom: 2px solid #ddd; padding-bottom: 2px; }
+.spec-row { display: flex; justify-content: space-between; font-size: 12px; color: #555; padding: 4px 0; border-bottom: 1px dashed #e0e0e0; }
+.det-atc { width: 100%; background: #4caf50; color: #fff; border: 3px solid #000; border-radius: 30px; padding: 14px; font-family: var(--font-main); font-weight: 900; font-size: 16px; cursor: pointer; margin-top: 8px; box-shadow: 4px 4px 0 #000; }
+.det-atc:active { transform: translate(2px, 2px); box-shadow: 0 0 0 #000; }
+.rev-section { margin-top: 30px; }
+.rev-section h3 { font-family: 'Lobster', cursive; font-size: 26px; margin-bottom: 15px; }
+.rev-card { background: #fff; border: 3px solid #000; border-radius: 16px; padding: 15px; margin-bottom: 12px; box-shadow: 4px 4px 0 #ddd; }
+.rev-head { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.rev-name { font-weight: bold; font-size: 13px; }
+.rev-stars { color: #ffaa00; font-size: 14px; }
+.rev-text { font-size: 13px; color: #444; line-height: 1.5; font-weight: bold; }
+.rev-hlp { margin-top: 8px; background: #fff; border: 2px solid #000; border-radius: 20px; padding: 4px 12px; font-size: 11px; color: #333; cursor: pointer; font-family: var(--font-main); font-weight: bold; box-shadow: 2px 2px 0 #000; }
+.rev-hlp:hover { background: #f5f5f5; }
+.rev-hlp:active { transform: translate(1px, 1px); box-shadow: 0 0 0 #000; }
+
+/* ── PAGE 3: TRACK ORDER ── */
+.trk-cont { max-width: 720px; margin: 0 auto; padding: 30px 20px; }
+.trk-hero { background: linear-gradient(135deg, #100a26, #211640); border-radius: 24px; padding: 30px; text-align: center; color: #fff; margin-bottom: 25px; border: 4px solid #ffaa00; box-shadow: 10px 10px 0 #000; }
+.trk-hero h2 { font-family: 'Lobster', cursive; font-size: 34px; color: #ffaa00; margin-bottom: 8px; }
+.trk-hero p { color: #ccc; font-size: 13px; font-weight: bold; }
+.trk-row { display: flex; gap: 10px; margin-top: 15px; }
+.trk-in { flex: 1; padding: 12px 16px; border-radius: 12px; border: 3px solid #ffaa00; background: #181133; color: #fff; font-family: var(--font-main); font-weight: bold; font-size: 14px; outline: none; }
+.trk-btn { background: #ffaa00; color: #000; border: 3px solid #000; padding: 12px 24px; border-radius: 12px; cursor: pointer; font-family: var(--font-main); font-weight: 900; font-size: 14px; box-shadow: 3px 3px 0 #000; }
+.trk-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 #000; }
+.ord-result { background: #fff; border-radius: 24px; border: 4px solid #000; padding: 25px; box-shadow: 8px 8px 0 #000; display: none; }
+.ord-result.show { display: block; }
+.ord-result h3 { font-family: 'Lobster', cursive; font-size: 24px; margin-bottom: 16px; }
+.prog-steps { display: flex; justify-content: space-between; position: relative; margin-bottom: 30px; padding: 0 8px; }
+.prog-steps::before { content: ''; position: absolute; top: 22px; left: 10%; right: 10%; height: 4px; background: #eee; z-index: 0; }
+.pfl { position: absolute; top: 22px; left: 10%; height: 4px; background: var(--primary); z-index: 1; transition: width 1s ease; }
+.pstep { display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2; flex: 1; }
+.sc { width: 44px; height: 44px; border-radius: 50%; background: #eee; border: 3px solid #ddd; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: all .4s; font-weight: bold; }
+.sc.done { background: var(--primary); border-color: #000; color: #fff; }
+.sc.curr { background: #fff176; border-color: var(--primary); animation: stp 0.8s infinite alternate; }
+@keyframes stp { 0% { transform: scale(1); } 100% { transform: scale(1.2); } }
+.step-lbl { font-size: 10px; margin-top: 6px; color: #555; text-align: center; max-width: 70px; font-weight: 900; line-height: 1.2; }
+.chaos-stat { background: #fff9f0; border: 3px dashed var(--primary); border-radius: 16px; padding: 15px; margin-bottom: 15px; }
+.chaos-stat h4 { font-weight: 900; font-size: 14px; margin-bottom: 6px; color: #222; }
+#cmsg { font-size: 13px; color: #ff5500; font-style: italic; line-height: 1.5; font-weight: bold; }
+.eta-box { background: linear-gradient(135deg, var(--danger), #b3003b); color: #fff; border-radius: 16px; padding: 14px; text-align: center; border: 3px solid #000; box-shadow: 4px 4px 0 #000; }
+.eta-lbl { font-size: 11px; font-weight: bold; opacity: .8; letter-spacing: 1px; }
+.eta-t { font-size: 24px; font-weight: bold; font-family: 'Bangers', cursive; letter-spacing: 2px; text-shadow: 2px 2px 0 #000; }
+.map-area { background: #e8f5e9; border-radius: 16px; border: 3px solid #2e7d32; padding: 16px; margin-top: 16px; }
+.map-area h4 { font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #2e7d32; }
+.map-road { position: relative; height: 80px; background: #b0bec5; border-radius: 12px; overflow: hidden; border: 3px solid #000; }
+.rl { position: absolute; top: 50%; width: 40px; height: 4px; background: #fff; border-radius: 2px; animation: rm 0.8s linear infinite; margin-top: -2px; }
+@keyframes rm { from { left: 110%; } to { left: -15%; } }
+.dg { position: absolute; bottom: 8px; font-size: 36px; animation: db 8s linear infinite; }
+@keyframes db {
+  0% { left: 4%; transform: scaleX(1); }
+  45% { left: 82%; transform: scaleX(1); }
+  50% { left: 82%; transform: scaleX(-1); }
+  95% { left: 4%; transform: scaleX(-1); }
+  100% { left: 4%; transform: scaleX(1); }
+}
+.sup-sec { margin-top: 20px; }
+.sup-sec h3 { font-family: 'Lobster', cursive; font-size: 22px; margin-bottom: 12px; }
+.sup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sup-card { background: #fff; border: 3px solid #000; border-radius: 16px; padding: 15px; text-align: center; cursor: pointer; transition: all .2s; box-shadow: 4px 4px 0 #000; }
+.sup-card:hover { transform: translateY(-4px); box-shadow: 6px 6px 0 var(--primary); border-color: var(--primary); }
+.sup-card:active { transform: translate(2px, 2px); box-shadow: 0 0 0 #000; }
+.sup-card .si { font-size: 32px; margin-bottom: 6px; }
+.sup-card h4 { font-size: 13px; font-weight: 900; color: #111; }
+.sup-card p { font-size: 11px; color: #777; margin-top: 4px; font-weight: bold; }
+
+/* ── FAKE LIVE CHAT POPUP ── */
+#live-chat-box {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 320px;
+  height: 400px;
+  background: #fff;
+  border: 4px solid #000;
+  border-radius: 20px;
+  box-shadow: 10px 10px 0 #000;
+  z-index: 1100;
+  flex-direction: column;
+  overflow: hidden;
+}
+.lc-header { background: var(--primary); color: #fff; padding: 12px; font-weight: 900; font-size: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #000; }
+.lc-messages { flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #fdfdfd; font-size: 12px; }
+.msg { padding: 8px 12px; border-radius: 12px; max-width: 80%; line-height: 1.4; font-weight: bold; word-break: break-word; }
+.msg.bot { background: #f1f0f0; align-self: flex-start; border: 2px solid #ddd; color: #333; }
+.msg.user { background: #ffe0b2; align-self: flex-end; border: 2px solid var(--primary); color: #000; }
+.lc-input-area { display: flex; border-top: 3px solid #000; }
+.lc-input { flex: 1; border: none; padding: 12px; outline: none; font-family: var(--font-main); font-size: 13px; font-weight: bold; }
+.lc-send { background: var(--sec); border: none; border-left: 3px solid #000; padding: 0 16px; font-weight: 900; font-size: 13px; cursor: pointer; }
+
+/* ── FAKE WHEEL OF DEALS ── */
+#wheel-box {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  z-index: 1300;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px;
+}
+.wheel-container {
+  background: #fff;
+  border: 4px solid #000;
+  border-radius: 24px;
+  padding: 30px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 10px 10px 0 #000;
+  position: relative;
+}
+.wheel {
+  width: 250px;
+  height: 250px;
+  border: 8px solid #000;
+  border-radius: 50%;
+  margin: 20px auto;
+  position: relative;
+  overflow: hidden;
+  transition: transform 4s cubic-bezier(0.25, 0.1, 0.25, 1);
+  background: conic-gradient(
+    #ff3d00 0deg 90deg,
+    #ffea00 90deg 180deg,
+    #00e5ff 180deg 270deg,
+    #00e676 270deg 360deg
+  );
+}
+.wheel-pointer {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 25px solid #000;
+  z-index: 10;
+}
+.wheel-label {
+  position: absolute;
+  font-weight: 900;
+  font-size: 13px;
+  color: #000;
+  text-shadow: 1px 1px #fff;
+}
+.wl1 { top: 40px; left: 110px; transform: rotate(0deg); }
+.wl2 { top: 110px; left: 170px; transform: rotate(90deg); }
+.wl3 { top: 180px; left: 100px; transform: rotate(180deg); }
+.wl4 { top: 110px; left: 15px; transform: rotate(270deg); }
+
+/* ── MUSIC BAR CONTROL ── */
+#music-control {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background: #fff;
+  border: 3px solid #000;
+  border-radius: 16px;
+  padding: 8px 12px;
+  box-shadow: 4px 4px 0 #000;
+  z-index: 250;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: bold;
+}
+#music-control button {
+  background: var(--primary);
+  color: #fff;
+  border: 2px solid #000;
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-family: var(--font-main);
+  font-weight: bold;
+  cursor: pointer;
+}
+#music-control input[type="range"] {
+  width: 60px;
+  cursor: pointer;
+}
+
+/* ── RAGE CURSOR ── */
+#rage-cursor { position: fixed; pointer-events: none; z-index: 99999; font-size: 28px; transform: translate(-50%, -50%); display: none; text-shadow: 2px 2px 0 #000; }
+@keyframes rainbowBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+</style>
+</head>
+<body>
+
+<!-- MEME AUTH (fake) -->
+<div id="meme-auth" style="position:fixed;inset:0;background:linear-gradient(135deg,#ffeb3b,#ff9800);z-index:20000;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:20px;">
+  <div style="max-width:520px;background:#fff;border:6px solid #000;border-radius:20px;padding:24px;text-align:center;box-shadow:10px 10px 0 #000;font-weight:900;">
+    <h2 style="font-family:'Lobster',cursive;margin-bottom:8px;">🔐 MemeBrain Auth</h2>
+    <p style="margin-bottom:12px;color:#333;font-weight:bold;">Authenticate with your vibes to unlock ShopSmart™ (totally fake, just click continue).</p>
+    <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" alt="meme-cat" style="width:160px;border-radius:12px;border:4px solid #000;margin-bottom:12px;">
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+      <button class="bty" onclick="acceptMemeAuth()">Continue as Meme King 👑</button>
+      <button class="bno" onclick="skipMemeAuth()">Skip (we judge you)</button>
+    </div>
+  </div>
+</div>
+
+<!-- FLOATING MUSIC CONTROL -->
+<div id="music-control">
+  <span>🎵 BGM: ON</span>
+  <button id="bgm-toggle" onclick="toggleBgm()">MUTE</button>
+  <input type="range" id="bgm-vol" min="0" max="1" step="0.1" value="0.5" oninput="changeBgmVol(this.value)">
+</div>
+
+<!-- FLOATING DOPAMINE BOOSTER (now meme card) -->
+<div id="dopamine-panel">
+  <div class="dopamine-header">
+    <span>🔥 MEME ZONE — CLICK TO CLOSE</span>
+    <span style="cursor:pointer" onclick="closeDopamine()">✕</span>
+  </div>
+  <div class="dopamine-gif" style="display:flex;gap:8px;padding:8px;align-items:center;justify-content:center;background:#fafafa;">
+    <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" alt="cat-meme" style="width:64px;height:64px;border-radius:12px;border:3px solid #000;">
+    <img src="https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif" alt="meme" style="width:64px;height:64px;border-radius:12px;border:3px solid #000;">
+    <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" alt="dance" style="width:64px;height:64px;border-radius:12px;border:3px solid #000;">
+  </div>
+  <div class="dopamine-desc">Double-tap for maximum cringe. Meme power: 9000%.</div>
+</div>
+
+<!-- SOUND INTERACTION ACTIVATION BANNER -->
+<div class="sound-banner" id="sb-banner" onclick="initSoundAct()">
+  🔊 CLICK HERE TO ACTIVATE PREMIUM meme SOUND EFFECTS & BACKGROUND MUSIC! (Mandatory for complete checkout)
+</div>
+
+<!-- PAGE 1: HOME -->
+<div class="page active" id="page-home">
+  <nav>
+    <div class="logo" onclick="S('pop');gp('home')">Shop<span>Smart</span>™</div>
+    <div class="nav-links">
+      <button onclick="gp('home')" class="anav" id="nh1">🏠 Shop</button>
+      <button onclick="gp('track')" id="nt1">📦 Track</button>
+      <button onclick="openDealsWheel()" id="nd1">💰 Deals</button>
+      <button onclick="openAboutModal()" id="na1">ℹ️ About</button>
+      <button onclick="callUs()" id="nc1">📞 Call</button>
+    </div>
+    <button class="cart-btn" onclick="S('pop');openCart()">🛒 Cart <span class="cc-badge" id="cc">0</span></button>
+  </nav>
+  <div class="fake-ad"><span class="mi">🔥 99% DEALS DETECTED! &nbsp;&nbsp; 💳 ACCEPTS ALL MAJOR CREDIT CARDS AND MONOPOLY MONEY &nbsp;&nbsp; ⚡ WARNING: STOCK EXPIRING IN 2 SECONDS &nbsp;&nbsp; 🎁 WIN A REAL GOLDEN RETRIEVER!</span></div>
+  <div class="nb"><div class="nd"></div><span id="nt">👀 Rahul from Mumbai just bought Headphones! Only 2 left!</span></div>
+  <div class="hero">
+    <h1>Welcome to ShopSmart™!</h1>
+    <p>India's Most Trusted* Online Shopping Destination</p>
+    <span class="hero-badge">*Trusted by at least 3 people</span>
+  </div>
+  <div class="trending" id="trending">
+    <div style="display:flex;align-items:center;gap:12px;justify-content:center;padding:10px 20px;">
+      <strong>🔥 Trending in India:</strong>
+      <span id="trend-txt">Chai, Samosa, Viral Cat GIFs & Bollywood Memes</span>
+      <button class="bty" onclick="openWhatsAppTrending()">Share on WhatsApp</button>
+    </div>
+  </div>
+  <div class="section-title">🛍️ Today's Best Picks</div>
+  <div class="products-grid" id="pg"></div>
+</div>
+
+<!-- PAGE 2: PRODUCT DETAIL -->
+<div class="page" id="page-detail">
+  <nav>
+    <div class="logo" onclick="S('pop');gp('home')">Shop<span>Smart</span>™</div>
+    <div class="nav-links">
+      <button onclick="gp('home')" id="nh2">🏠 Shop</button>
+      <button onclick="gp('track')" id="nt2">📦 Track</button>
+      <button onclick="openDealsWheel()" id="nd2">💰 Deals</button>
+      <button onclick="openAboutModal()" id="na2">ℹ️ About</button>
+      <button onclick="callUs()" id="nc2">📞 Call</button>
+    </div>
+    <button class="cart-btn" onclick="S('pop');openCart()">🛒 Cart <span class="cc-badge" id="cc2">0</span></button>
+  </nav>
+  <div class="det-cont">
+    <button class="det-back" onclick="S('pop');gp('home')">← Back to Shop</button>
+    <div class="det-card">
+      <div class="det-emo-wrap" id="det-emo">📦</div>
+      <div class="det-info">
+        <h2 id="det-name"></h2>
+        <div class="det-rating" id="det-rat"></div>
+        <div class="det-price" id="det-prc"></div>
+        <div class="det-desc" id="det-dsc"></div>
+        <div class="det-specs" id="det-spc"></div>
+        <button class="det-atc" id="det-atc-btn">Add to Cart 🛒</button>
+      </div>
+    </div>
+    <div class="rev-section">
+      <h3>😂 Customer Reviews</h3>
+      <div id="rev-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: TRACK ORDER -->
+<div class="page" id="page-track">
+  <nav>
+    <div class="logo" onclick="S('pop');gp('home')">Shop<span>Smart</span>™</div>
+    <div class="nav-links">
+      <button onclick="gp('home')" id="nh3">🏠 Shop</button>
+      <button onclick="gp('track')" class="anav" id="nt3">📦 Track</button>
+      <button onclick="openDealsWheel()" id="nd3">💰 Deals</button>
+      <button onclick="openAboutModal()" id="na3">ℹ️ About</button>
+      <button onclick="callUs()" id="nc3">📞 Call</button>
+    </div>
+    <button class="cart-btn" onclick="S('pop');openCart()">🛒 Cart <span class="cc-badge" id="cc3">0</span></button>
+  </nav>
+  <div class="trk-cont">
+    <div class="trk-hero">
+      <h2>📦 Track Your Order</h2>
+      <p>Find out where your package is (we have no idea)</p>
+      <div class="trk-row">
+        <input class="trk-in" id="tri" placeholder="Enter Order ID  e.g. SHOPSMART-XK29P1" maxlength="30">
+        <button class="trk-btn" onclick="trackOrder()">🔍 Track!</button>
+      </div>
+    </div>
+    <div class="ord-result" id="or">
+      <h3 id="or-title">Order Status</h3>
+      <div class="prog-steps">
+        <div class="pfl" id="pfl"></div>
+        <div class="pstep"><div class="sc done" id="sc0">✓</div><div class="step-lbl">Placed</div></div>
+        <div class="pstep"><div class="sc" id="sc1">🔄</div><div class="step-lbl">Processing</div></div>
+        <div class="pstep"><div class="sc" id="sc2">📦</div><div class="step-lbl">Packed</div></div>
+        <div class="pstep"><div class="sc" id="sc3">🚚</div><div class="step-lbl">Out for Delivery</div></div>
+        <div class="pstep"><div class="sc" id="sc4">🏠</div><div class="step-lbl">Delivered</div></div>
+      </div>
+      <div class="chaos-stat"><h4>📡 Live Update:</h4><div id="cmsg">Locating package...</div></div>
+      <div class="eta-box"><div class="eta-lbl">ESTIMATED DELIVERY</div><div class="eta-t" id="etat">3–47 Business Days</div></div>
+      <div class="map-area">
+        <h4>🗺️ Live Driver Location (Definitely Real)</h4>
+        <div class="map-road">
+          <div class="rl" style="animation-delay:0s"></div>
+          <div class="rl" style="animation-delay:.32s"></div>
+          <div class="rl" style="animation-delay:.64s"></div>
+          <div class="dg" id="scooter-driver">🛵</div>
+        </div>
+      </div>
+      <div id="order-receipt-section"></div>
+      <div class="sup-sec">
+        <h3>😤 Need Help?</h3>
+        <div class="sup-grid">
+          <div class="sup-card" onclick="supAct('chat')"><div class="si">💬</div><h4>Live Chat</h4><p>Wait: 3 business weeks</p></div>
+          <div class="sup-card" onclick="supAct('call')"><div class="si">📞</div><h4>Call Us</h4><p>1800-WAIT-PLZ</p></div>
+          <div class="sup-card" onclick="supAct('email')"><div class="si">📧</div><h4>Email</h4><p>Reply in: never™</p></div>
+          <div class="sup-card" onclick="supAct('refund')"><div class="si">💸</div><h4>Refund</h4><p>lol good luck</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAKE LIVE CHAT WIDGET -->
+<div id="live-chat-box">
+  <div class="lc-header">
+    <span>💬 SmartBot 3000 (Very Intelligent AI)</span>
+    <span style="cursor:pointer" onclick="closeChat()">✕</span>
+  </div>
+  <div class="lc-messages" id="chat-msgs">
+    <div class="msg bot">Hello! I am SmartBot. How can I not help you today? Please type your question in English or Skibidi.</div>
+  </div>
+  <div class="lc-input-area">
+    <input type="text" class="lc-input" id="chat-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter') sendChatMsg()">
+    <button class="lc-send" onclick="sendChatMsg()">SEND</button>
+  </div>
+</div>
+
+<!-- WHEEL OF DEALS MODAL -->
+<div id="wheel-box">
+  <div class="wheel-container">
+    <button class="popup-close" onclick="closeDealsWheel()">✕</button>
+    <h2>🎡 Lucky Spin-To-Save Wheel!</h2>
+    <p>Spin for a chance to win 99% off your entire cart! Genuinely 100% real chance!</p>
+    <div class="wheel-pointer"></div>
+    <div class="wheel" id="wheel-element">
+      <div class="wheel-label wl1">99% OFF</div>
+      <div class="wheel-label wl2">FREE SHIP</div>
+      <div class="wheel-label wl3">PAY ₹1000</div>
+      <div class="wheel-label wl4">WIN IPHONE</div>
+    </div>
+    <button class="bty" onclick="spinWheel()" id="spin-btn">SPIN WHEEL NOW 🚀</button>
+  </div>
+</div>
+
+<!-- SHARED: CART SIDEBAR -->
+<div class="cart-sidebar" id="cs">
+  <button class="xc" onclick="closeCart()">✕</button>
+  <h2>🛒 Your Cart</h2>
+  <div class="ci-list" id="cil"></div>
+  <div class="cart-total" id="ct">Total: ₹0</div>
+  <div class="co-area">
+    <button id="cob" onmouseover="runCoBtn()" onclick="startCO()">Proceed to Checkout →</button>
+  </div>
+</div>
+
+<!-- SPINNING CHIPI CHIPI CAT OVERLAY -->
+<div id="tw">
+  <div id="tb">yoink!</div>
+  <img class="cat-img" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3h5amFzNXBkaGFkdm1rcTB6N2R1a3JleXBndnB0amk3MWsyNmpwbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wZtDRe9kxRCOyZqKOs/giphy.gif" alt="Spinning Cat">
+</div>
+
+<!-- TSUNAMI WAVE -->
+<div id="tsunami-wave">
+  <div class="tsunami-emoji">🚽</div>
+  <div id="tsunami-text">SKIBIDI TSUNAMI HIT!</div>
+</div>
+
+<!-- POPUP DIALOG -->
+<div class="overlay" id="pov">
+  <div class="popup" id="pb">
+    <button class="popup-close" onclick="cpop()">✕</button>
+    <h2 id="pt"></h2>
+    <p id="pm"></p>
+    <div class="popup-btns" id="pbtns"></div>
+  </div>
+</div>
+
+<!-- PASSWORD SCREEN -->
+<div id="ps">
+  <h1>🔐 Create Highly Secure Account</h1>
+  <p>A completely secure, impossible-to-guess password is required to save your order from thieves.</p>
+  <div class="pr">
+    <h3>⚠️ Password Requirements:</h3>
+    <ul style="padding:0">
+      <li id="r1">❌ Must be exactly 12 characters</li>
+      <li id="r2">❌ Must contain a prime number (2, 3, 5, or 7)</li>
+      <li id="r3">❌ Must contain your birth month in Roman numerals (e.g. IV)</li>
+      <li id="r4">❌ Must contain the word "ShopSmart"</li>
+      <li id="r5">❌ Must NOT contain vowels (except "e")</li>
+      <li id="r6">❌ Must end with 🍊</li>
+    </ul>
+  </div>
+  <input type="text" id="pwi" placeholder="Type your secure password... (we read it out loud)" oninput="chkPw(this.value)" onkeydown="spkPw(event)">
+  <div id="pwe"></div>
+  <button id="pws" onclick="subPw()">Verify & Secure Order →</button>
+  <button id="skip-pw" onclick="skipPw()">I give up — skip (adds ₹999 skip surcharge)</button>
+</div>
+
+<!-- LOADING SCREEN -->
+<div id="ls">
+  <div style="position:relative;width:min(340px,90vw);height:60px;overflow:hidden;margin-bottom:10px;">
+    <div class="ldog">🚽</div>
+  </div>
+  <div class="lm">⚙️</div>
+  <h2>Securing Payment Details...</h2>
+  <div class="lb"><div class="lf" id="lf"></div></div>
+  <div id="lt">Pro tip: Reloading the page will restart your suffering.</div>
+</div>
+
+<!-- SUCCESS SCREEN -->
+<div id="scs">
+  <div class="confetti-wrap">💩🎉💩</div>
+  <h1>Order Placed!</h1>
+  <p>Estimated delivery: <strong>3–47 business days</strong>.<br>No refunds allowed. Good luck! 🤞</p>
+  <div id="oid"></div>
+  <div class="scs-btns">
+    <button class="bty" onclick="resetApp()">Shop Again (Please 🙏)</button>
+    <button class="bno" onclick="goToTrack()">Track This Order 📦</button>
+  </div>
+</div>
+
+<!-- COOKIE CONSENT -->
+<div class="ck-base" id="ckb">
+  <h3>🍪 Cookie Hijack!</h3>
+  <p>We sell your browser history, cursor coordinates, and key logs to 47 targeted advertising agencies. Agree to proceed.</p>
+  <div class="ck-btns">
+    <button class="ck-acc" onclick="accCook()">Accept All</button>
+    <button class="ck-rej" onclick="rejCook()">Reject</button>
+  </div>
+</div>
+<button id="af" onclick="accCook()">🍪 Accept Cookies!</button>
+
+<!-- RAGE CURSOR -->
+<div id="rage-cursor">🖱️</div>
+
+<!-- TOAST CONTAINER -->
+<div class="tc" id="tc"></div>
+
+<script>
+/* ═══════════════════════════════════════════
+   REAL MEME SOUNDS VIA MYINSTANTS
+   All interactions trigger these classic sound effects
+═══════════════════════════════════════════ */
+const SOUNDS = {
+  pop:       'https://www.myinstants.com/media/sounds/discord-notification.mp3',
+  win:       'https://www.myinstants.com/media/sounds/taco-bell-bong.mp3',
+  err:       'https://www.myinstants.com/media/sounds/huh.mp3',
+  vine:      'https://www.myinstants.com/media/sounds/vine-boom.mp3',
+  bruh:      'https://www.myinstants.com/media/sounds/bruh.mp3',
+  dun:       'https://www.myinstants.com/media/sounds/emotional-damage-meme.mp3',
+  doge:      'https://www.myinstants.com/media/sounds/what-the-dog-doin.mp3',
+  coin:      'https://www.myinstants.com/media/sounds/oof.mp3',
+  steal:     'https://www.myinstants.com/media/sounds/fart-with-reverb.mp3',
+  pipe:      'https://www.myinstants.com/media/sounds/jixaw-metal-pipe-falling-sound.mp3',
+  bgm:       'https://www.myinstants.com/media/sounds/mii-channel-music.mp3',
+  whyGay:    'https://www.myinstants.com/media/sounds/why-are-you-gay.mp3',
+  imGay:     'https://www.myinstants.com/media/sounds/im-gay.mp3',
+  uwu:       'https://www.myinstants.com/media/sounds/uwu.mp3',
+  sadViolin: 'https://www.myinstants.com/media/sounds/sad-violin.mp3',
+  screaming: 'https://www.myinstants.com/media/sounds/perfect-scream.mp3'
+};
+// Extra cringe sounds
+SOUNDS.yeet = 'https://www.myinstants.com/media/sounds/yeet.mp3';
+SOUNDS.pew = 'https://www.myinstants.com/media/sounds/pew-pew.mp3';
+SOUNDS.cringe = 'https://www.myinstants.com/media/sounds/cringe.mp3';
+SOUNDS.tabla = 'https://www.myinstants.com/media/sounds/tabla.mp3';
+SOUNDS.dhol = 'https://www.myinstants.com/media/sounds/dhol.mp3';
+SOUNDS.bollywood = 'https://www.myinstants.com/media/sounds/bollywood-trailer.mp3';
+
+const audioCache = {};
+let bgmAudio = null;
+let bgmMuted = false;
+let isAudioInited = false;
+
+// Play a sound immediately even if sound system not initialized
+function playImmediate(keyOrUrl, vol = 0.9) {
+  try {
+    let url = keyOrUrl;
+    if (SOUNDS[keyOrUrl]) url = SOUNDS[keyOrUrl];
+    const a = new Audio(url);
+    a.volume = vol;
+    a.play().catch(() => {});
+  } catch (e) {}
+}
+
+function initSoundAct() {
+  if (isAudioInited) return;
+  isAudioInited = true;
+  document.getElementById('sb-banner').style.display = 'none';
+  
+  // Preload and play background music
+  bgmAudio = new Audio(SOUNDS.bgm);
+  bgmAudio.loop = true;
+  bgmAudio.volume = 0.4;
+  bgmAudio.play().catch(e => console.log("Audio play failed:", e));
+  
+  // Cache other sounds
+  Object.entries(SOUNDS).forEach(([k, url]) => {
+    if (k !== 'bgm') {
+      const a = new Audio(url);
+      a.preload = 'auto';
+      audioCache[k] = a;
+    }
+  });
+  
+  toast('🔊 Sound system activated! Enjoy the brainrot.');
+  S('win');
+}
+
+function S(name, vol = 0.8) {
+  if (!isAudioInited) return;
+  try {
+    const cached = audioCache[name];
+    if (cached) {
+      const a = cached.cloneNode();
+      a.volume = vol;
+      a.play().catch(() => {});
+    }
+  } catch(e) {}
+}
+
+// Play random sound for clickable UI interactions (every button click)
+function buttonClickSound() {
+  // choose from a subset of meme sounds
+  const keys = ['pop','vine','bruh','dun','yeet','pew','cringe','uwu','coin'];
+  const k = keys[Math.floor(Math.random() * keys.length)];
+  // try cached play first, otherwise immediate
+  if (isAudioInited && audioCache[k]) {
+    try { const a = audioCache[k].cloneNode(); a.volume = 0.7; a.play().catch(()=>{}); } catch(e) { playImmediate(k,0.7); }
+  } else {
+    playImmediate(k, 0.7);
+  }
+}
+
+// Global handler: play a meme sound on every button click
+document.addEventListener('click', (ev) => {
+  try {
+    const t = ev.target;
+    if (!t) return;
+    const tag = (t.tagName || '').toLowerCase();
+    if (tag === 'button' || t.classList.contains('atc-btn') || t.classList.contains('bty') || t.classList.contains('bno') || t.classList.contains('ck-acc') || t.classList.contains('ck-rej')) {
+      buttonClickSound();
+    }
+  } catch(e) {}
+}, true);
+
+// Share trending text via WhatsApp (opens new tab)
+function openWhatsAppTrending() {
+  const txt = encodeURIComponent('🔥 Trending now on ShopSmart: Chai, Samosa, Viral Cat GIFs & Bollywood Memes! Check it out: ' + location.href);
+  window.open('https://wa.me/?text=' + txt, '_blank');
+  S('coin');
+}
+
+// Fake call helper: plays ringtone and shows popup
+function callUs() {
+  playImmediate('pew', 0.9);
+  spop('📞 Calling ShopSmart Support', 'Connecting you to 1800-WAIT-PLZ... Please hold.', [{ l: 'End Call', cls: 'bno', a: 'cpop()' }]);
+}
+
+function toggleBgm() {
+  if (!bgmAudio) return;
+  bgmMuted = !bgmMuted;
+  bgmAudio.muted = bgmMuted;
+  const btn = document.getElementById('bgm-toggle');
+  if (bgmMuted) {
+    btn.textContent = "UNMUTE";
+    // Tricking them: unmuting increases volume!
+    toast('🔈 Music muted. You coward.');
+  } else {
+    btn.textContent = "MUTE";
+    toast('🔊 Music unmuted! LET\'S GOOOO!');
+  }
+}
+
+function changeBgmVol(v) {
+  if (!bgmAudio) return;
+  // If they slide volume to 0, make it full volume instead!
+  if (parseFloat(v) === 0) {
+    bgmAudio.volume = 1.0;
+    document.getElementById('bgm-vol').value = 1.0;
+    toast('💀 Did you try to set music to 0? FULL VOLUME ACTIVATED!');
+    S('vine');
+  } else {
+    bgmAudio.volume = parseFloat(v);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   PRODUCTS DATA
+═══════════════════════════════════════════ */
+const prods = [
+  {id:1, name:'Wireless Headphones', emoji:'🎧', price:1299, orig:4999, rat:4, desc:'Crystal clear audio with 2-hour battery life (marketed as 40h). Perfect for ignoring your family.', specs:{Brand:'SoundFake Pro', Battery:'2h (claimed: 40h)', Weight:'800g', Colour:'Random'}},
+  {id:2, name:'Gaming Chair', emoji:'🪑', price:8499, orig:24999, rat:3, desc:'Used by real pros*. (*Pro = our CEO\'s 12-year-old nephew who has never lost a game according to himself)', specs:{Material:'Pleather™', MaxWeight:'60kg', Assembly:'Good luck', Lumbar:'Imaginary'}},
+  {id:3, name:'Smart Watch', emoji:'⌚', price:2199, orig:7999, rat:5, desc:'Tracks steps, heartbeat, sleep, and your deepest regrets. App syncs with something.', specs:{Display:'Technically exists', Battery:'1 day', WaterResistant:'Please no', Sensors:'Vibes-based'}},
+  {id:4, name:'Mechanical Keyboard', emoji:'⌨️', price:3499, orig:9999, rat:4, desc:'CLICKY. Neighbours WILL file a noise complaint. 87 keys, 86 functional.', specs:{Switches:'Mystery Box', Layout:'Slightly off-centre', Backlight:'Strobe only', Warranty:'Voided'}},
+  {id:5, name:'Desk Lamp', emoji:'💡', price:699, orig:1999, rat:2, desc:'Illuminates exactly 1 square foot. Great for reading the first few words of a sentence.', specs:{Brightness:'Low', Bulb:'Fake one included', Neck:'Adjustable (once)', Cable:'Needs adapter'}},
+  {id:6, name:'Bluetooth Speaker', emoji:'🔊', price:1799, orig:5499, rat:4, desc:'EXTREMELY LOUD. Bass mostly just vibrates the table in confusion.', specs:{Battery:'6h', Range:'2 metres', Waterproof:'Survived splash once'}},
+  {id:7, name:'Coffee Maker', emoji:'☕', price:4299, orig:12999, rat:3, desc:'Makes something hot and brown. Beeps 7 mandatory times on start. No way to disable.', specs:{Capacity:'500ml', Temp:'Very hot', Beeps:'7 (non-negotiable)', Cleaning:'Not our problem'}},
+  {id:8, name:'Running Shoes', emoji:'👟', price:2999, orig:8999, rat:5, desc:'Carbon fibre sole technology* (*it\'s a sticker). You will run faster OR get tired faster.', specs:{Sizing:'Order 3 sizes up', Sole:'Sticker carbon', Laces:'Sold separately'}},
+  {id:9, name:'Air Fryer', emoji:'🍳', price:3199, orig:8999, rat:4, desc:'Fries things! Also reliably sets off smoke alarms. Manual is in an unidentified language.', specs:{Capacity:'3L', Noise:'Significant', Manual:'Unknown language'}}
+];
+
+// Add a few meme/trending items to increase the cringe factor
+prods.push(
+  {id:101, name:'Meme Cat Plush', emoji:'😺', price:199, orig:999, rat:5, desc:'Cuddly cat that judges your life choices.', specs:{Material:'Poly-judgement', Size:'Tiny', Warranty:'Eternal side-eye'}},
+  {id:102, name:'Brainrot Starter Pack', emoji:'🧠', price:49, orig:499, rat:5, desc:'Includes 3 cringe audios and 1 sticker.', specs:{Includes:'3x cringe sounds', Stickers:'1', Toxicity:'High'}},
+  {id:103, name:'Spinning Meme Wheel Toy', emoji:'🎡', price:299, orig:999, rat:4, desc:'Guaranteed to be cursed. Do not spin before bed.', specs:{Battery:'AAA (not included)', Noise:'Annoying', Age:'All'}}
+);
+
+// Indian-themed meme products
+prods.push(
+  {id:201, name:'Chai Lovers Pack', emoji:'☕', price:149, orig:399, rat:5, desc:'Includes 10 sachets of instant chai. Smells like nostalgia.', specs:{Serves:'10', Type:'Masala', ShelfLife:'2 months'}},
+  {id:202, name:'Samosa Snack Box', emoji:'🥟', price:249, orig:599, rat:4, desc:'Assorted samosas, microwavable. Not responsible for crumbs.', specs:{Count:6, Veg:'Yes', Heating:'Microwave-friendly'}},
+  {id:203, name:'Desi Meme Pack', emoji:'😂', price:79, orig:299, rat:5, desc:'50+ viral Indian meme GIFs and ringtones.', specs:{Includes:'GIFs + ringtones', Size:'50MB', Format:'Instant cringe'}}
+);
+
+const allRevs = [
+  {n:'Arjun K.', s:5, t:'Arrived in 2 days, broke on day 3. Still 5 stars — packaging bubble wrap was high quality.'},
+  {n:'Sneha M.', s:1, t:'Ordered size 8, got size 4. Called support. On hold for 47 minutes. Same 10-second jingle.'},
+  {n:'RealDealHunter99', s:5, t:'AMAZING PRODUCT HIGHLY RECOMMEND BUY NOW THIS IS NOT A PAID REVIEW.'},
+  {n:'Verified Buyer 🟢', s:4, t:'Arrived in a box that was clearly someone else\'s return, with half-eaten lunch inside.'}
+];
+
+/* ═══════════════════════════════════════════
+   STATE MANAGEMENT
+═══════════════════════════════════════════ */
+let cart = [];
+let curProd = null;
+let coStage = 0;
+let ckRej = 0;
+let thiefBusy = false;
+let lastOid = '';
+let ordersDatabase = {
+  'SHOPSMART-XK29P1': {
+    items: [
+      { name: 'Wireless Headphones', emoji: '🎧', price: 1299 },
+      { name: 'Desk Lamp', emoji: '💡', price: 699 }
+    ],
+    total: 1998,
+    stage: 2,
+    msg: '🛵 Driver paused to read Reddit theories. Delay expected.',
+    eta: 'Tuesday (TBD which year)'
+  },
+  'SHOPSMART-CRINGE': {
+    items: [
+      { name: 'Mechanical Keyboard', emoji: '⌨️', price: 3499 },
+      { name: 'Gaming Chair', emoji: '🪑', price: 8499 }
+    ],
+    total: 11998,
+    stage: 1,
+    msg: '📦 Package is undergoing a safety check for explosive vibes.',
+    eta: 'Before you die 🤞'
+  }
+};
+let btnEsc = false;
+let rageCursorSize = 28;
+let rageClicks = 0;
+let isTsunamiActive = false;
+
+/* ═══════════════════════════════════════════
+   ROUTING
+═══════════════════════════════════════════ */
+function gp(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  ['home', 'track'].forEach(n => {
+    [1, 2, 3].forEach(s => {
+      const el = document.getElementById('n' + n[0] + s);
+      if (el) el.classList.toggle('anav', n === name);
+    });
+  });
+  window.scrollTo(0, 0);
+  S('pop');
+}
+
+/* ═══════════════════════════════════════════
+   RENDER PRODUCTS
+═══════════════════════════════════════════ */
+function renderProds() {
+  const g = document.getElementById('pg');
+  g.innerHTML = '';
+  prods.forEach(p => {
+    const disc = Math.round((1 - p.price / p.orig) * 100);
+    const d = document.createElement('div');
+    d.className = 'product-card';
+    d.id = 'p' + p.id;
+    d.innerHTML = `
+      <div class="discount-badge">-${disc}%</div>
+      <span class="product-emoji">${p.emoji}</span>
+      <div class="product-name">${p.name}</div>
+      <div class="product-price">₹${p.price.toLocaleString()} <span class="orig">₹${p.orig.toLocaleString()}</span></div>
+      <button class="atc-btn" onclick="event.stopPropagation(); askCap(${p.id})">Add to Cart 🛒</button>
+    `;
+    d.onclick = () => openDet(p.id);
+    g.appendChild(d);
+  });
+}
+
+/* ═══════════════════════════════════════════
+   PRODUCT DETAIL PAGE
+═══════════════════════════════════════════ */
+function openDet(id) {
+  curProd = prods.find(x => x.id === id);
+  const p = curProd;
+  document.getElementById('det-emo').textContent = p.emoji;
+  document.getElementById('det-name').textContent = p.name;
+  document.getElementById('det-rat').textContent = '★'.repeat(p.rat) + '☆'.repeat(5 - p.rat) + ' (4,847 views right now)';
+  document.getElementById('det-prc').innerHTML = `₹${p.price.toLocaleString()} <span class="dorig">₹${p.orig.toLocaleString()}</span>`;
+  document.getElementById('det-dsc').textContent = p.desc;
+  
+  document.getElementById('det-spc').innerHTML = '<h4>📋 Specifications (Click to break)</h4>' + 
+    Object.entries(p.specs).map(([k, v]) => `
+      <div class="spec-row" onclick="breakSpec(this)">
+        <span>${k}</span>
+        <span style="text-align:right">${v}</span>
+      </div>`).join('');
+      
+  document.getElementById('det-atc-btn').onclick = () => askCap(p.id);
+  
+  const sh = [...allRevs].sort(() => Math.random() - .5);
+  document.getElementById('rev-list').innerHTML = sh.map(r => `
+    <div class="rev-card">
+      <div class="rev-head">
+        <span class="rev-name">${r.n}</span>
+        <span class="rev-stars">${'★'.repeat(r.s) + '☆'.repeat(5 - r.s)}</span>
+      </div>
+      <div class="rev-text">${r.t}</div>
+      <button class="rev-hlp" onclick="verifyHelpful(this)">👍 Helpful?</button>
+    </div>`).join('');
+  
+  gp('detail');
+}
+
+function breakSpec(el) {
+  S('pipe');
+  el.style.transform = `rotate(${Math.random() * 20 - 10}deg) translateY(10px)`;
+  el.style.color = 'red';
+  toast('💥 You broke that spec row! Surcharge added.');
+  cart.push({ id: 9991, name: 'Broken Specification Penalty', emoji: '🛠️', price: 150, cid: Date.now() });
+  updCart();
+}
+
+function verifyHelpful(btn) {
+  S('vine');
+  spop('🔐 Account Verification Required', 
+       'To mark this review as helpful, please log in with your primary bank details to confirm you are human.',
+       [
+         { l: 'Verify Now ( बैंक details )', cls: 'bty', a: 'runAwayLogin()' },
+         { l: 'Never mind', cls: 'bno', a: 'cpop()' }
+       ]);
+}
+
+function runAwayLogin() {
+  toast('😂 Access denied. Our banking portal is currently undergoing a vibe check.');
+  S('err');
+  cpop();
+}
+
+/* ═══════════════════════════════════════════
+   CAPTCHA SYSTEM
+═══════════════════════════════════════════ */
+let capTarget = null;
+const caps = [
+  { q: 'Select the orange to proceed. THIS IS AN ORANGE HACKATHON. 🍊', opts: ['🍎 Apple', '🍊 Orange', '🍋 Lemon', '🍐 Pear'], ok: [1] },
+  { q: 'Select all items containing extreme cringe:', opts: ['🤡 This website', '🎵 Subway Surfers theme', '🚽 Skibidi Toilet', '🤓 Coding'], ok: [0, 1, 2, 3] },
+  { q: 'Is 99% off a scam? Choose carefully:', opts: ['Yes', 'No', 'Depends on my internet speed', 'Both'], ok: [0, 1, 2, 3] },
+  { q: 'Select the dog that says wow:', opts: ['🐱 Cat', '🐕 Doge', '🦁 Lion', '🦙 Llama'], ok: [1] }
+];
+
+function askCap(pid) {
+  capTarget = pid;
+  const c = caps[Math.floor(Math.random() * caps.length)];
+  spop('🤖 Captcha Checklist!', '', [], '');
+  document.getElementById('pm').innerHTML = '';
+  document.getElementById('pbtns').innerHTML = `
+    <div class="cap-box" style="width:100%; text-align:left">
+      <p>${c.q}</p>
+      <div class="cap-opts">
+        ${c.opts.map((o, i) => `<button class="co-opt" onclick="togCap(this)">${o}</button>`).join('')}
+      </div>
+    </div>
+    <button class="bty" onclick="subCap(${JSON.stringify(c.ok)})">Verify ✓</button>
+    <button class="bno" onclick="cpop()">Abort</button>
+  `;
+}
+
+function togCap(el) {
+  S('pop');
+  el.classList.toggle('sel');
+}
+
+function subCap(ok) {
+  const all = [...document.querySelectorAll('.co-opt')];
+  const sel = all.filter(e => e.classList.contains('sel')).map(e => all.indexOf(e));
+  const pass = ok.every(x => sel.includes(x)) && sel.every(x => ok.includes(x));
+  if (pass) {
+    cpop();
+    addToCart(capTarget);
+  } else {
+    S('err');
+    toast('❌ CAPTCHA FAILED! Brain cells depleting.');
+    askCap(capTarget);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   CART FUNCTIONALITY
+═══════════════════════════════════════════ */
+function addToCart(id) {
+  const p = prods.find(x => x.id === id);
+  cart.push({ ...p, cid: Date.now() });
+  updCart();
+  S('coin');
+  toast(`🛒 Added ${p.emoji} ${p.name} to cart!`);
+  openCart();
+}
+
+function removeFromCart(cid) {
+  cart = cart.filter(x => x.cid !== cid);
+  updCart();
+  S('steal');
+  toast('🗑️ Item deleted! (Fart reverb echo)');
+}
+
+function updCart() {
+  const count = cart.length;
+  document.querySelectorAll('.cc-badge').forEach(el => el.textContent = count);
+  const l = document.getElementById('cil');
+  if (count === 0) {
+    l.innerHTML = '<p style="color:#aaa;margin-top:20px;text-align:center;font-size:13px">Cart is empty 😢<br><small>Hurry! Prices are rising!</small></p>';
+  } else {
+    l.innerHTML = cart.map(x => `
+      <div class="citem">
+        <span class="ci-emoji">${x.emoji}</span>
+        <div class="ci-info">
+          <div class="ci-name">${x.name}</div>
+          <div class="ci-price">₹${x.price.toLocaleString()}</div>
+        </div>
+        <button class="ci-del" onclick="removeFromCart(${x.cid})">🗑️</button>
+      </div>`).join('');
+  }
+  const total = cart.reduce((s, i) => s + i.price, 0);
+  document.getElementById('ct').textContent = `Total: ₹${total.toLocaleString()}`;
+}
+
+function openCart() { document.getElementById('cs').classList.add('open'); }
+function closeCart() { document.getElementById('cs').classList.remove('open'); }
+
+/* ═══════════════════════════════════════════
+   RUNAWAY CHECKOUT BUTTON
+═══════════════════════════════════════════ */
+let cobMoves = 0;
+function runCoBtn() {
+  if (!cart.length || btnEsc) return;
+  cobMoves++;
+  const b = document.getElementById('cob');
+  const sw = 360, bw = b.offsetWidth || 180;
+  const nx = Math.random() * (sw - bw - 10);
+  const ny = Math.random() * 60 - 20;
+  b.style.left = nx + 'px';
+  b.style.top = ny + 'px';
+  b.style.width = 'auto';
+  S('pop');
+  
+  if (cobMoves > 5) {
+    btnEsc = true;
+    b.style.opacity = '.15';
+    b.style.fontSize = '8px';
+    b.textContent = 'PAY HERE (IF YOU CAN CLICK ME)';
+    toast('😂 The Checkout Button is running away! Stabilization fee: ₹99.');
+    S('vine');
+    
+    // Add stabilization option
+    cart.push({ id: 9992, name: 'Checkout Button Stabilization Surcharge', emoji: '⚖️', price: 99, cid: Date.now() });
+    updCart();
+  }
+}
+
+function startCO() {
+  if (!cart.length) {
+    toast('🛒 Your cart is completely empty!');
+    S('err');
+    return;
+  }
+  // Reset checkout button style
+  btnEsc = false;
+  cobMoves = 0;
+  const b = document.getElementById('cob');
+  b.style.cssText = 'background:#4caf50;color:#fff;border:3px solid #000;padding:14px;border-radius:30px;font-family:var(--font-main);font-weight:900;font-size:16px;cursor:pointer;position:absolute;left:0;top:0;width:100%;opacity:1;';
+  b.textContent = 'Proceed to Checkout →';
+  
+  coStage = 0;
+  nextConf();
+}
+
+const confs = [
+  { t: 'Confirm Checkout?', m: () => `Proceeding will charge ₹${cart.reduce((s,i)=>s+i.price,0).toLocaleString()} to your soul. Continue?` },
+  { t: 'Are you 100% sure? 🤔', m: () => 'A Polar Bear in Antarctica might feel sad if you buy this. Are you still willing to proceed?' },
+  { t: 'Wait, look at this! 😭', m: () => 'Our CEO\'s dog needs college funds. Do you want to double your order to support him?' },
+  { t: 'No Refund Acknowledgment ⚠️', m: () => 'By clicking confirm, you agree that you will not sue us, cry in public, or ask for a refund. Ever.' },
+  { t: 'ABSOLUTE LAST QUESTION', m: () => 'Are you a real human? Or just a bot designed to test our sanity?' }
+];
+
+function nextConf() {
+  if (coStage >= confs.length) {
+    showPwScr();
+    return;
+  }
+  S('dun');
+  const c = confs[coStage];
+  spop(c.t, c.m(), [
+    { l: 'YES, CONFIRM ✅', cls: 'bty', a: 'coStage++; nextConf()' },
+    { l: 'ABORT ORDER ❌', cls: 'bno', a: 'cpop()' }
+  ]);
+}
+
+/* ═══════════════════════════════════════════
+   PASSWORD CHALLENGE
+═══════════════════════════════════════════ */
+function showPwScr() {
+  cpop();
+  document.getElementById('ps').classList.add('active');
+  document.getElementById('pwi').value = '';
+  document.getElementById('pwe').textContent = '';
+  resetRules();
+}
+
+function resetRules() {
+  for (let i = 1; i <= 6; i++) {
+    const e = document.getElementById('r' + i);
+    e.textContent = '❌ ' + e.textContent.replace(/^[✅❌] /, '');
+  }
+}
+
+function chkPw(v) {
+  const chk = [
+    v.length === 12,
+    /[2357]/.test(v),
+    /I{1,3}|IV|VI{0,3}|IX|XI{1,3}|XII/.test(v.toUpperCase()),
+    /ShopSmart/.test(v),
+    !/[aiouAIOU]/.test(v),
+    v.endsWith('🍊')
+  ];
+  for (let i = 0; i < 6; i++) {
+    const e = document.getElementById('r' + (i + 1));
+    e.textContent = (chk[i] ? '✅ ' : '❌ ') + e.textContent.replace(/^[✅❌] /, '');
+  }
+}
+
+function spkPw(e) {
+  if (e.key.length === 1 && window.speechSynthesis) {
+    const u = new SpeechSynthesisUtterance(e.key);
+    u.rate = 1.6;
+    u.volume = 1.0;
+    window.speechSynthesis.speak(u);
+  }
+}
+
+function subPw() {
+  const v = document.getElementById('pwi').value;
+  const ok = v.length === 12 && 
+             /[2357]/.test(v) && 
+             /I{1,3}|IV|VI{0,3}|IX|XI{1,3}|XII/.test(v.toUpperCase()) && 
+             /ShopSmart/.test(v) && 
+             !/[aiouAIOU]/.test(v) && 
+             v.endsWith('🍊');
+  if (ok) {
+    S('win');
+    document.getElementById('ps').classList.remove('active');
+    showVirus();
+  } else {
+    S('err');
+    document.getElementById('pwe').textContent = '❌ Invalid secure password! Try checking requirements.';
+  }
+}
+
+function skipPw() {
+  cart.push({ id: 9993, name: 'Password Bypass Fine', emoji: '💸', price: 999, cid: Date.now() });
+  updCart();
+  document.getElementById('ps').classList.remove('active');
+  S('pipe');
+  toast('💸 ₹999 bypass fine added to cart. Security is expensive!');
+  showVirus();
+}
+
+/* ═══════════════════════════════════════════
+   VIRUS WARNING POPUP
+═══════════════════════════════════════════ */
+function showVirus() {
+  cpop();
+  spop('', '', [], '');
+  document.getElementById('pb').innerHTML = `
+    <div class="vw">
+      <h2>⚠️ SYSTEM INFECTION DETECTED!</h2>
+      <pre>Scanning C:/System/Users/User/Passwords.txt...
+> THREAT FOUND: Trojan.Brainrot.Skibidi
+> Credit Cards: AT RISK 💳
+> System status: EXPLODING IN 5 SECONDS
+> Required action: Complete checkout immediately to clean files.</pre>
+      <div class="sb"><div class="sf"></div></div>
+      <p style="font-size:12px; color:#ff5500; font-weight:bold; margin-bottom:10px">Purchase confirmation automatically removes Trojan.Brainrot.Skibidi from your browser history.</p>
+      <div style="display:flex; gap:10px; justify-content:center">
+        <button class="bty" onclick="dismissVirus()" style="background:#00ff66; color:#000; border-color:#000">🛡️ CLEAN SYSTEM & BUY</button>
+        <button class="bno" onclick="dismissVirus()">IGNORE (VERY DANGEROUS)</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('pov').classList.add('active');
+  S('pipe');
+}
+
+function dismissVirus() {
+  cpop();
+  startLoad();
+}
+
+/* ═══════════════════════════════════════════
+   DECORATIVE FAKE LOADING SCREEN
+═══════════════════════════════════════════ */
+const ltips = [
+  'Downloading more RAM... 🚀',
+  'Translating website into Wingdings...',
+  'Charging you for electricity used...',
+  'Manager rejected checkout. Overriding manager...',
+  'Adding random delivery delays for authenticity...',
+  'Asking Siri if we should complete this transaction...',
+  'Generating a fake ETA that sounds believable...',
+  'Reticulating brainrot splines...',
+  'Formulating terms and conditions you will not read...'
+];
+
+function startLoad() {
+  const s = document.getElementById('ls');
+  s.classList.add('active');
+  const lf = document.getElementById('lf');
+  lf.style.transition = 'none';
+  lf.style.width = '0%';
+  
+  setTimeout(() => {
+    lf.style.transition = 'width 10s cubic-bezier(0.1, 0.8, 0.2, 1)';
+    lf.style.width = '88%'; // Stops at 88%
+  }, 100);
+
+  let i = 0;
+  const tipEl = document.getElementById('lt');
+  const iv = setInterval(() => {
+    tipEl.textContent = ltips[i % ltips.length];
+    i++;
+    S('pop');
+  }, 1800);
+
+  setTimeout(() => {
+    clearInterval(iv);
+    s.classList.remove('active');
+    showSuc();
+  }, 11000);
+}
+
+/* ═══════════════════════════════════════════
+   ORDER PLACED SUCCESS
+═══════════════════════════════════════════ */
+function showSuc() {
+  const id = 'SHOPSMART-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+  lastOid = id;
+  
+  // Save order details to the database before clearing the cart
+  ordersDatabase[id] = {
+    items: [...cart],
+    total: cart.reduce((s, i) => s + i.price, 0),
+    stage: Math.floor(Math.random() * 3) + 1, // 1 (processing), 2 (packed), or 3 (out for delivery)
+    msg: cmsgs[Math.floor(Math.random() * cmsgs.length)],
+    eta: etas[Math.floor(Math.random() * etas.length)]
+  };
+  
+  document.getElementById('oid').textContent = 'Order ID: ' + id;
+  document.getElementById('scs').classList.add('active');
+  S('win');
+  
+  // Empty cart
+  cart = [];
+  updCart();
+  closeCart();
+}
+
+function resetApp() {
+  document.getElementById('scs').classList.remove('active');
+  gp('home');
+  renderProds();
+  toast('👋 Welcome back! Ready to waste more money?');
+}
+
+function goToTrack() {
+  document.getElementById('scs').classList.remove('active');
+  gp('track');
+  if (lastOid) {
+    document.getElementById('tri').value = lastOid;
+    trackOrder(); // Auto track immediately!
+  }
+}
+
+/* ═══════════════════════════════════════════
+   SPINNING CAT HEIST (REPLACED NINJA THIEF)
+═══════════════════════════════════════════ */
+const catMsgs = [
+  'chipi chipi chapa chapa 🐱',
+  'yoink! stolen!',
+  'ez cart clear lmfao',
+  'mine now! 🐾',
+  'dubin dubin daba daba 🐱'
+];
+
+function runThief() {
+  if (!cart.length || thiefBusy) return;
+  thiefBusy = true;
+  
+  const w = document.getElementById('tw');
+  const b = document.getElementById('tb');
+  b.textContent = catMsgs[Math.floor(Math.random() * catMsgs.length)];
+  
+  w.style.cssText = 'position:fixed; bottom:80px; left:-200px; z-index:950; pointer-events:none; display:flex; transition:none;';
+  
+  // Start the steal sound
+  S('steal');
+  
+  // Phase 1: Cat sprints to middle
+  setTimeout(() => {
+    w.style.transition = 'left 0.5s cubic-bezier(0.2, 0.9, 0.3, 1)';
+    w.style.left = '45vw';
+    
+    setTimeout(() => {
+      // Steals item!
+      if (cart.length) {
+        const idx = Math.floor(Math.random() * cart.length);
+        const stolen = cart.splice(idx, 1)[0];
+        
+        // Leaves POOP in cart
+        cart.push({ id: 8888, name: '💩 Mystery Poop (Non-Removable)', emoji: '💩', price: 999, cid: Date.now() });
+        updCart();
+        
+        b.textContent = `stole ${stolen.emoji}! left 💩!`;
+        S('pipe');
+        toast(`🐱 SPINNING CAT stole your ${stolen.name} and replaced it with Mystery Poop!`);
+      }
+      
+      // Phase 2: Cat escapes
+      setTimeout(() => {
+        w.style.transition = 'left 0.4s ease-in';
+        w.style.left = '110vw';
+        setTimeout(() => {
+          w.style.display = 'none';
+          thiefBusy = false;
+        }, 500);
+      }, 800);
+      
+    }, 600);
+  }, 50);
+}
+
+/* ═══════════════════════════════════════════
+   SKIBIDI TSUNAMI EVENTS
+═══════════════════════════════════════════ */
+function triggerTsunami() {
+  if (isTsunamiActive) return;
+  isTsunamiActive = true;
+  
+  const tw = document.getElementById('tsunami-wave');
+  tw.style.cssText = 'position:fixed; top:0; left:-105%; width:100%; height:100vh; z-index:1200; pointer-events:none; display:flex; transition:none;';
+  
+  S('screaming');
+  S('doge');
+  
+  setTimeout(() => {
+    // Shake screen during tsunami
+    document.body.classList.add('shaking');
+    tw.style.transition = 'left 1.2s ease-in-out';
+    tw.style.left = '100vw';
+    
+    setTimeout(() => {
+      document.body.classList.remove('shaking');
+      tw.style.display = 'none';
+      isTsunamiActive = false;
+      
+      // Chaos consequences: invert page!
+      document.body.classList.add('inverted');
+      toast('🚨 SKIBIDI TSUNAMI: Gravity inverted! Use "If you\'re gay, rotate" to restore!');
+      S('vine');
+      
+      // Scramble prices
+      prods.forEach(p => {
+        p.price = Math.round(p.price * (Math.random() * 1.5 + 0.5));
+      });
+      renderProds();
+      
+      showGayRotateBtn();
+      
+    }, 1300);
+  }, 100);
+}
+
+let gayRotateInterval = null;
+
+function showGayRotateBtn() {
+  const existing = document.getElementById('gay-rotate-btn');
+  if (existing) existing.remove();
+  
+  const btn = document.createElement('button');
+  btn.id = 'gay-rotate-btn';
+  btn.textContent = "🏳️‍🌈 If you're gay, rotate";
+  btn.style.cssText = `
+    position: fixed;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, #ff0055, #ffaa00, #4caf50, #00e5ff, #9c27b0);
+    color: #fff;
+    border: 5px solid #000;
+    padding: 16px 32px;
+    font-size: 22px;
+    font-weight: 900;
+    font-family: 'Comic Neue', cursive;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 6px 6px 0 #000;
+    z-index: 10000;
+    animation: wob 0.5s infinite alternate;
+  `;
+  
+  btn.onclick = () => {
+    S('whyGay');
+    setTimeout(() => {
+      S('imGay');
+    }, 1200);
+    
+    document.body.classList.remove('inverted');
+    btn.remove();
+    
+    if (gayRotateInterval) clearInterval(gayRotateInterval);
+    
+    const existingBanner = document.getElementById('gay-mode-banner');
+    if (existingBanner) existingBanner.remove();
+    
+    const banner = document.createElement('div');
+    banner.id = 'gay-mode-banner';
+    banner.style.cssText = `
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ffe0b2;
+      border: 4px solid #ff0055;
+      padding: 12px 24px;
+      border-radius: 20px;
+      z-index: 10000;
+      font-weight: 900;
+      box-shadow: 6px 6px 0 #000;
+      font-size: 16px;
+      color: #000;
+      text-align: center;
+    `;
+    document.body.appendChild(banner);
+    
+    let timer = 30;
+    banner.innerHTML = `🌈 GAY MODE ACTIVATED: Gravity Restored (${timer}s remaining) 🌈`;
+    
+    gayRotateInterval = setInterval(() => {
+      timer--;
+      if (timer <= 0) {
+        clearInterval(gayRotateInterval);
+        banner.remove();
+        document.body.style.filter = 'none';
+        document.body.classList.add('inverted');
+        S('screaming');
+        toast('🚨 Gay mode expired! Gravity inverted again!');
+        showGayRotateBtn();
+      } else {
+        banner.innerHTML = `🌈 GAY MODE ACTIVATED: Gravity Restored (${timer}s remaining) 🌈`;
+        document.body.style.filter = `hue-rotate(${timer * 15}deg)`;
+      }
+    }, 1000);
+  };
+  
+  document.body.appendChild(btn);
+}
+
+/* ═══════════════════════════════════════════
+   LUCKY SPINNING WHEEL (DEALS PAGE)
+═══════════════════════════════════════════ */
+function openDealsWheel() {
+  S('pop');
+  document.getElementById('wheel-box').style.display = 'flex';
+}
+function closeDealsWheel() {
+  document.getElementById('wheel-box').style.display = 'none';
+}
+function spinWheel() {
+  S('pipe');
+  const w = document.getElementById('wheel-element');
+  w.style.transition = 'transform 3.5s cubic-bezier(0.2, 0.8, 0.2, 1)';
+  // Always force it to stop on wl3 (PAY 1000)
+  // Slices are: WL1: 0deg, WL4: 90deg, WL3: 180deg, WL2: 270deg
+  const stopDegrees = 1800 + 180; // 5 full spins + 180 deg
+  w.style.transform = `rotate(${stopDegrees}deg)`;
+  
+  document.getElementById('spin-btn').disabled = true;
+  document.getElementById('spin-btn').textContent = 'SPINNING...';
+  
+  setTimeout(() => {
+    S('dun');
+    // hide the wheel modal so the popup can be interacted with cleanly
+    closeDealsWheel();
+    spop('🎉 WINNER! 🎉', 
+         'Congratulations! You landed on: PAY ₹1000!\n\nThis mandatory "Lucky Surcharge" has been added to your cart.',
+         [{ l: 'Collect Surcharge 💸', cls: 'bty', a: 'addWheelFine()' }]);
+    // re-enable button after popup
+    const btn = document.getElementById('spin-btn');
+    if (btn) { btn.disabled = false; btn.textContent = 'SPIN WHEEL NOW 🚀'; }
+  }, 3800);
+}
+
+function addWheelFine() {
+  cart.push({ id: 7777, name: '🎡 Lucky Surcharge Winner', emoji: '💸', price: 1000, cid: Date.now() });
+  updCart();
+  cpop();
+  closeDealsWheel();
+  // Reset wheel state
+  const w = document.getElementById('wheel-element');
+  w.style.transition = 'none';
+  w.style.transform = 'rotate(0deg)';
+  document.getElementById('spin-btn').disabled = false;
+  document.getElementById('spin-btn').textContent = 'SPIN WHEEL NOW 🚀';
+}
+
+/* ═══════════════════════════════════════════
+   ABOUT PAGE MODAL
+═══════════════════════════════════════════ */
+function openAboutModal() {
+  spop('ℹ️ ShopSmart™ — About Us',
+       'ShopSmart™ was created in 2026 by an elite syndicate of UX engineers. Our mission: psychological warfare against shoppers. We track your scrolling speed to double prices if you look desperate, and share your cookie profiles with 47 sketchy advertising portals. Agree to our terms to close this.',
+       [{ l: 'Accept Terms & Close', cls: 'bty', a: 'cpop()' }]);
+}
+
+/* ═══════════════════════════════════════════
+   TRACK ORDER LOGIC
+═══════════════════════════════════════════ */
+const cmsgs = [
+  '📍 Package lost in deep space. Delivery drone battery at 1%.',
+  '🛵 Driver paused to read Reddit theories. Delay expected.',
+  '📦 Package is undergoing a safety check for explosive vibes.',
+  '🚨 GPS states driver has accidentally driven into a river.',
+  '😴 Delivery team is currently sleeping. Check back next Tuesday.',
+  '📍 Package was loaded onto a cargo ship to Greenland by mistake.'
+];
+const etas = [
+  'Before you die 🤞',
+  'Tuesday (TBD which year)',
+  'ETA: Maybe never™',
+  '3-47 Business months'
+];
+
+function trackOrder() {
+  const inp = document.getElementById('tri').value.trim();
+  if (!inp) {
+    toast('❌ Enter a valid Order ID!');
+    S('err');
+    return;
+  }
+  S('pop');
+  toast('🔍 Searching database...');
+  
+  setTimeout(() => {
+    document.getElementById('or').classList.add('show');
+    document.getElementById('or-title').textContent = 'Order ID: ' + inp;
+    
+    // Check if order exists in the database
+    const order = ordersDatabase[inp];
+    if (!order) {
+      // ORDER NOT FOUND VIEW (UNHINGED CRIME)
+      document.getElementById('pfl').style.width = '0%';
+      for (let i = 0; i < 5; i++) {
+        document.getElementById('sc' + i).className = 'sc';
+      }
+      document.getElementById('cmsg').innerHTML = '<span style="color:var(--danger)">⚠️ DATABASE INVENTORY SYNC FAILURE</span>';
+      document.getElementById('etat').textContent = 'NEVER';
+      
+      // Stop scooter animation
+      const scooter = document.getElementById('scooter-driver');
+      scooter.style.animation = 'none';
+      
+      document.getElementById('order-receipt-section').innerHTML = `
+        <div style="background:#ffebee; border:4px solid var(--danger); border-radius:16px; padding:15px; text-align:center; box-shadow:6px 6px 0 #000; font-family:'Comic Neue', cursive; margin-top:20px;">
+          <h4 style="color:var(--danger); font-size:16px; font-weight:900; margin-bottom:8px;">🚨 ORDER NOT FOUND IN REGISTRY</h4>
+          <p style="font-size:12px; font-weight:bold; margin-bottom:12px; color:#333;">The Order ID "<strong>${inp}</strong>" was not indexed. It may have been eaten by the Chipi Chipi Cat or confiscated by corporate taxation.</p>
+          <button class="trk-btn" onclick="forceSearchDatabase('${inp}')" style="background:var(--danger); color:#fff; font-size:13px; width:100%; box-shadow:3px 3px 0 #000; cursor:pointer;">🔍 Pay ₹50 to Force-Search Server Registry</button>
+        </div>
+      `;
+      S('err');
+      return;
+    }
+    
+    // Set stage progress
+    const progressWidths = [0, 20, 45, 75, 95];
+    document.getElementById('pfl').style.width = progressWidths[order.stage] + '%';
+    
+    for (let i = 0; i < 5; i++) {
+      const sc = document.getElementById('sc' + i);
+      sc.className = 'sc' + (i < order.stage ? ' done' : i === order.stage ? ' curr' : '');
+    }
+    
+    document.getElementById('cmsg').textContent = order.msg;
+    document.getElementById('etat').textContent = order.eta;
+    
+    // Render Receipt / Order details
+    let itemsHtml = order.items.map(item => `
+      <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:bold; margin-bottom:4px; font-family:'Comic Neue', cursive; color:#333;">
+        <span>${item.emoji} ${item.name}</span>
+        <span>₹${item.price}</span>
+      </div>
+    `).join('');
+
+    document.getElementById('order-receipt-section').innerHTML = `
+      <div style="margin-top: 25px; border-top: 3px dashed #000; padding-top: 15px; font-family:'Comic Neue', cursive;">
+        <h4 style="font-family:'Lobster', cursive; font-size:24px; margin-bottom:12px; color:#ffaa00; text-shadow:2px 2px #000; text-align:center;">🧾 ORDER SUMMARY & DETAILS</h4>
+        <div style="background:#fff3e0; border:3px solid #000; border-radius:16px; padding:15px; margin-bottom:15px; box-shadow:6px 6px 0 #000;">
+          ${itemsHtml}
+          <div style="border-top:2px solid #000; margin-top:8px; padding-top:8px; display:flex; justify-content:space-between; font-weight:900; font-size:16px; color:#000;">
+            <span>Grand Total Surcharged:</span>
+            <span>₹${order.total}</span>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:20px;">
+          <button class="trk-btn" onclick="accelerateDelivery('${inp}')" style="background:#4caf50; color:#fff; font-size:12px; padding:8px 16px; cursor:pointer;">🚀 Speed Up Delivery (+₹199)</button>
+          <button class="trk-btn" onclick="cancelOrderInvoice('${inp}')" style="background:#e91e63; color:#fff; font-size:12px; padding:8px 16px; cursor:pointer;">❌ Cancel Order (Fee ₹500)</button>
+          <button class="trk-btn" onclick="tipDriverInvoice('${inp}')" style="background:#ff9800; color:#fff; font-size:12px; padding:8px 16px; cursor:pointer;">🎁 Tip Driver (+₹99)</button>
+        </div>
+      </div>
+    `;
+    
+    // Animate scooter
+    const scooter = document.getElementById('scooter-driver');
+    scooter.style.animation = 'none';
+    void scooter.offsetWidth;
+    scooter.style.animation = 'db 8s linear infinite';
+    
+  }, 1000);
+}
+
+function forceSearchDatabase(inp) {
+  S('pipe');
+  toast('💸 ₹50 force-search surcharge applied!');
+  spop('📡 ACCESSING SERVER MAINFRAME...', 'Connecting via dial-up to registry... Please wait.', []);
+  
+  setTimeout(() => {
+    cpop(); // close modal
+    S('bruh');
+    spop('❌ SEARCH COMPLETED (0 results)', 'The registry query returned NULL. Surcharge of ₹50 remains on your tab for our electrical bills. Thank you for your donation!', [{ l: 'Bruh okay', cls: 'bty', a: 'cpop()' }]);
+  }, 3500);
+}
+
+function accelerateDelivery(oid) {
+  const order = ordersDatabase[oid];
+  if (!order) return;
+  
+  S('win');
+  order.total += 199;
+  order.stage = Math.min(4, order.stage + 1); // move stage
+  order.eta = "In 3 minutes (or never)";
+  order.msg = "🚀 Driver is speeding! (Running through red lights)";
+  
+  trackOrder();
+  toast('🚀 Speed mode enabled! ₹199 surcharge added.');
+}
+
+function cancelOrderInvoice(oid) {
+  const order = ordersDatabase[oid];
+  if (!order) return;
+  
+  S('vine');
+  spop('⚠️ CONFIRM CANCELLATION', 'Cancelling your order requires a mandatory ₹500 cancellation fee. Do you wish to proceed?', [
+    { l: 'Yes, cancel it', cls: 'bty', a: `proceedCancelOrder('${oid}')` },
+    { l: 'No, keep order', cls: 'wht', a: 'cpop()' }
+  ]);
+}
+
+function proceedCancelOrder(oid) {
+  cpop();
+  const order = ordersDatabase[oid];
+  if (!order) return;
+  
+  S('dun');
+  order.total += 500;
+  order.msg = "❌ Cancellation denied. ₹500 surcharge added for cancellation attempt.";
+  trackOrder();
+  
+  spop('❌ CANCELLATION DENIED', 'The driver has locked the scooter handlebars and cannot stop. A ₹500 penalty fee has been added to your bill.', [{ l: 'Unlucky...', cls: 'bty', a: 'cpop()' }]);
+}
+
+function tipDriverInvoice(oid) {
+  const order = ordersDatabase[oid];
+  if (!order) return;
+  
+  S('uwu');
+  order.total += 99;
+  order.msg = "🎁 Driver is happy! UwU thank you sempai!";
+  trackOrder();
+  toast('🎁 Driver tipped ₹99! (Driver did an anime spin)');
+}
+
+/* ═══════════════════════════════════════════
+   LIVE CHAT MODULE
+═══════════════════════════════════════════ */
+function supAct(t) {
+  if (t === 'chat') {
+    document.getElementById('live-chat-box').style.display = 'flex';
+    S('pop');
+  } else if (t === 'call') {
+    S('dun');
+    spop('📞 Calling 1800-WAIT-PLZ', 'All lines are currently busy playing hold music. Please hold for 3 hours.', [{ l: 'Keep Holding', cls: 'bty', a: 'cpop()' }]);
+  } else if (t === 'email') {
+    S('pop');
+    toast('📧 Support email queue: 47,829 requests ahead of you.');
+  } else {
+    S('err');
+    spop('💸 Refund Request Rejected', 'Refund policy: No. Surcharge of ₹50 applied for asking.', [{ l: 'Accept Loss', cls: 'bty', a: 'cpop()' }]);
+    cart.push({ id: 9994, name: 'Refund Request Fine', emoji: '💸', price: 50, cid: Date.now() });
+    updCart();
+  }
+}
+
+function closeChat() {
+  document.getElementById('live-chat-box').style.display = 'none';
+}
+
+const botReplies = [
+  'Have you tried refreshing your brain cells? 🧠',
+  'We cannot hear you. Try typing louder! 📢',
+  'That question sounds very Skibidi. 🚽',
+  'Error 404: Customer empathy not found.',
+  'Please pay ₹50 to unlock this message reply.',
+  'lol no refunds 😂',
+  'hawk tuah spit on that thang! 😂💦',
+  'Only in Ohio is the delivery this slow! 💀',
+  'Bro has negative rizz, order cancelled? Jk 😂',
+  'Baby gronky gyatt rizzler of kai cenat! 🍟',
+  'Sigma grindset: we ignore all support messages.',
+  'You sound like a beta male right now. Chat terminated? 🤫🧏',
+  'Mewing streak active! 🤫🧏 Can\'t talk right now!'
+];
+
+function sendChatMsg() {
+  const inp = document.getElementById('chat-input');
+  const txt = inp.value.trim();
+  if (!txt) return;
+  
+  const box = document.getElementById('chat-msgs');
+  
+  // User message
+  const um = document.createElement('div');
+  um.className = 'msg user';
+  um.textContent = txt;
+  box.appendChild(um);
+  inp.value = '';
+  
+  S('pop');
+  
+  setTimeout(() => {
+    // Bot reply
+    const bm = document.createElement('div');
+    bm.className = 'msg bot';
+    bm.textContent = botReplies[Math.floor(Math.random() * botReplies.length)];
+    box.appendChild(bm);
+    box.scrollTop = box.scrollHeight;
+    S('err');
+  }, 1000);
+}
+
+function closeDopamine() {
+  // instead of simply hiding, start the meme cascade flood
+  startMemeCascade();
+}
+
+// Meme flood images
+const memeImages = [
+  'https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif',
+  'https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif',
+  'https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif',
+  'https://media.giphy.com/media/13borq7Zo2kulO/giphy.gif',
+  'https://media.giphy.com/media/ICOgUNjpvO0PC/giphy.gif'
+  , 'https://media.giphy.com/media/l0MYB8Ory7Hqefo9a/giphy.gif'
+  , 'https://media.giphy.com/media/26tknCqiJrBQG6bxC/giphy.gif'
+  , 'https://media.giphy.com/media/3o6Zt6ML6BklcajjsA/giphy.gif'
+  , 'https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif'
+  , 'https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif'
+];
+
+let memeCount = 0;
+let memeLimit = 30;
+let memeOverlay = null;
+
+function startMemeCascade() {
+  if (memeOverlay) return; // already running
+  // hide the small panel
+  document.getElementById('dopamine-panel').style.display = 'none';
+
+  memeOverlay = document.createElement('div');
+  memeOverlay.id = 'meme-flood';
+  memeOverlay.style.cssText = 'position:fixed;inset:0;z-index:20000;background:transparent;display:flex;align-items:flex-start;justify-content:flex-start;overflow:hidden;cursor:pointer;';
+  memeOverlay.onclick = handleMemeClick;
+  document.body.appendChild(memeOverlay);
+  memeCount = 0;
+  toast('🐱 Meme cascade initiated! Click to spawn memes.');
+  S('pop');
+}
+
+function handleMemeClick(e) {
+  // spawn a new meme image at random position, increasing size
+  memeCount++;
+  const img = document.createElement('img');
+  const src = memeImages[memeCount % memeImages.length];
+  img.src = src;
+  const size = 60 + memeCount * 18; // grows each time
+  img.style.cssText = `position:absolute;width:${size}px;height:auto;border:4px solid #000;border-radius:8px;box-shadow:4px 4px 0 #000;transition:transform .2s;`;
+  // random position but allow some off-screen to create fill effect
+  const left = Math.random() * (window.innerWidth - size);
+  const top = Math.random() * (window.innerHeight - size);
+  img.style.left = left + 'px';
+  img.style.top = top + 'px';
+  // random rotation
+  img.style.transform = `rotate(${(Math.random() * 40 - 20)}deg)`;
+  memeOverlay.appendChild(img);
+
+  // play a window/pop sound
+  S('pop');
+
+  if (memeCount >= memeLimit) {
+    finishMemeCascade();
+  }
+}
+
+function finishMemeCascade() {
+  if (!memeOverlay) return;
+  // show the cheeky cat call-to-action
+  memeOverlay.onclick = null;
+  memeOverlay.style.pointerEvents = 'none';
+  const btn = document.createElement('button');
+  btn.id = 'meme-touch-btn';
+  btn.textContent = 'Touch me (Cheeky Cat)';
+  btn.style.cssText = 'position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:20001;padding:18px 28px;font-size:20px;font-weight:900;border-radius:12px;border:6px solid #000;background:linear-gradient(90deg,#ffeb3b,#ff9800);cursor:pointer;box-shadow:8px 8px 0 #000;';
+  btn.onclick = showCheekyCatPopup;
+  document.body.appendChild(btn);
+  toast('🎯 Fill complete! Tap the button for a cheeky surprise.');
+  S('win');
+}
+
+function showCheekyCatPopup() {
+  // remove the button and show a fun popup
+  const b = document.getElementById('meme-touch-btn');
+  if (b) b.remove();
+  // remove meme overlay entirely
+  const mo = document.getElementById('meme-flood');
+  if (mo) { mo.remove(); memeOverlay = null; }
+  spop('😼 Cheeky Cat Approaches', '"If you pet me I will judge your playlist."', [
+    { l: 'Pet the Cheeky Cat', cls: 'bty', a: 'cpop(); playImmediate(\'yeet\');' },
+    { l: 'Run away', cls: 'bno', a: 'cpop()' }
+  ]);
+}
+
+/* ═══════════════════════════════════════════
+   COOKIE CONSENT RUNAWAYS
+═══════════════════════════════════════════ */
+const ckPos = [{b:160, r:20}, {b:240, r:150}, {b:90, r:220}];
+function rejCook() {
+  ckRej++;
+  S('oof');
+  const msgs = ['Are you sure? 🥺', 'You broke our heart! 💔', 'Begging you to click Accept... 🥺'];
+  if (ckRej <= 3) {
+    const ch = document.createElement('div');
+    ch.className = 'ck-child';
+    const pos = ckPos[ckRej - 1];
+    ch.style.cssText = `bottom:${pos.b}px; right:${pos.r}px;`;
+    ch.textContent = msgs[ckRej - 1];
+    ch.onclick = accCook;
+    document.body.appendChild(ch);
+    
+    if (ckRej >= 3) {
+      const af = document.getElementById('af');
+      af.style.display = 'block';
+      let ang = 0;
+      window.ckiv = setInterval(() => {
+        ang += 0.04;
+        const x = window.innerWidth / 2 + Math.cos(ang) * 250 - 60;
+        const y = window.innerHeight / 2 + Math.sin(ang) * 140 - 20;
+        af.style.left = x + 'px';
+        af.style.top = y + 'px';
+        af.style.right = 'auto';
+        af.style.bottom = 'auto';
+      }, 16);
+      toast('🍪 The Cookie Accept button is now hunting you. Run.');
+      S('pipe');
+    }
+  }
+}
+
+function accCook() {
+  document.getElementById('ckb').style.display = 'none';
+  document.getElementById('af').style.display = 'none';
+  document.querySelectorAll('.ck-child').forEach(e => e.remove());
+  if (window.ckiv) clearInterval(window.ckiv);
+  S('win');
+  toast('🍪 Cookies accepted! We now own your cookie profile.');
+}
+
+/* ═══════════════════════════════════════════
+   RAGE CURSOR SCALING
+═══════════════════════════════════════════ */
+document.addEventListener('mousemove', e => {
+  const rc = document.getElementById('rage-cursor');
+  if (rageClicks > 3) {
+    rc.style.left = e.clientX + 'px';
+    rc.style.top = e.clientY + 'px';
+  }
+});
+
+document.addEventListener('click', () => {
+  rageClicks++;
+  if (rageClicks > 3) {
+    rageCursorSize = Math.min(28 + rageClicks * 7, 200);
+    const rc = document.getElementById('rage-cursor');
+    rc.style.display = 'block';
+    rc.style.fontSize = rageCursorSize + 'px';
+  }
+});
+
+/* ═══════════════════════════════════════════
+   POPUP HELPERS
+═══════════════════════════════════════════ */
+function spop(title, msg, btns) {
+  document.getElementById('pt').textContent = title;
+  document.getElementById('pm').textContent = msg;
+  if (btns && btns.length) {
+    document.getElementById('pbtns').innerHTML = btns.map(b => `<button class="${b.cls}" onclick="${b.a}">${b.l}</button>`).join('');
+  } else {
+    document.getElementById('pbtns').innerHTML = '';
+  }
+  document.getElementById('pov').classList.add('active');
+}
+function cpop() { document.getElementById('pov').classList.remove('active'); }
+
+/* ═══════════════════════════════════════════
+   URGENT TOAST GENERATOR
+═══════════════════════════════════════════ */
+const urgentMsgs = [
+  '⚡ Alert: Price of Wireless Headphones just increased by ₹150!',
+  '👀 Sneha from Delhi added your item to her cart!',
+  '🔥 Warning: Website layout collapsing in 5 minutes!',
+  '🚽 Skibidi alert: Brainrot level critical!',
+  '💳 Warning: Please insert credit card into CD drive to checkout.'
+];
+
+setInterval(() => {
+  toast(urgentMsgs[Math.floor(Math.random() * urgentMsgs.length)]);
+  S('vine');
+}, 12000);
+
+/* ── EVENT SCHEDULERS ── */
+setInterval(runThief, 25000);     // Spinning Cat heist every 25 seconds
+setInterval(triggerTsunami, 45000); // Brainrot Tsunami every 45 seconds
+
+// Dynamic product alert notification bar
+const ntxt = [
+  '👀 Rahul from Mumbai just bought Headphones! Only 2 left!',
+  '⚡ 84 people are trying to steal items from your cart!',
+  '🔥 Double value deal detected! Buy 2, get 0 free!',
+  '🏆 Best E-commerce Site of the Year 2026 (Awarded by ourselves)'
+];
+let ni = 0;
+setInterval(() => {
+  document.getElementById('nt').textContent = ntxt[ni % ntxt.length];
+  ni++;
+}, 4000);
+
+/* ═══════════════════════════════════════════
+   ORIENTATION CHANGE & GAY ROTATE RULE
+═══════════════════════════════════════════ */
+window.addEventListener('resize', checkOrientation);
+window.addEventListener('orientationchange', checkOrientation);
+
+let pageRotatedByButton = false;
+let _initialOrientation = window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
+let _hasDoneInitialCheck = false;
+
+function getOrientation() {
+  return window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
+}
+
+// (rotate overlay implementation provided below with a force flag)
+
+// Modified createRotateButtonIfNeeded to accept forced display (used by auto prompt)
+function createRotateButtonIfNeeded(force) {
+  const isLandscape = getOrientation() === 'landscape';
+  let btn = document.getElementById('device-rotate-prompt');
+
+  if (isLandscape || force) {
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.id = 'device-rotate-prompt';
+      btn.innerHTML = '🏳️‍🌈 If you\'re gay, rotate';
+      btn.style.cssText = `
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        background: linear-gradient(45deg, #ff0055, #ffaa00, #4caf50, #00e5ff, #9c27b0);
+        background-size: 400% 400%;
+        animation: rainbowBG 3s ease infinite;
+        color: #fff;
+        border: 10px solid #000;
+        font-size: 42px;
+        font-weight: 900;
+        font-family: 'Comic Neue', cursive;
+        cursor: pointer;
+        z-index: 999999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-shadow: 4px 4px #000;
+      `;
+
+      btn.onclick = () => {
+        S('whyGay');
+        setTimeout(() => { S('imGay'); }, 1200);
+
+        // Clicking restores normal orientation (overlay initially inverted when forced)
+        document.body.classList.remove('inverted');
+        btn.style.display = 'none'; // hide the overlay
+        pageRotatedByButton = true;
+
+        toast('🌈 Gravity restored! Enjoy gay mode for 30s.');
+
+        let timer = 30;
+        const banner = document.createElement('div');
+        banner.id = 'gay-timer-banner';
+        banner.style.cssText = `
+          position: fixed;
+          top: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: #ff0055;
+          color: white;
+          border: 4px solid #000;
+          padding: 10px 20px;
+          font-weight: 900;
+          z-index: 999999;
+          font-size: 18px;
+          border-radius: 12px;
+          box-shadow: 4px 4px 0 #000;
+        `;
+        document.body.appendChild(banner);
+
+        const interval = setInterval(() => {
+          timer--;
+          if (timer <= 0) {
+            clearInterval(interval);
+            banner.remove();
+            // After cooldown, invert page again
+            document.body.classList.add('inverted');
+            pageRotatedByButton = false;
+            toast('🚨 Gay mode expired! Gravity inverted again!');
+            // evaluate orientation after cooldown
+            _initialOrientation = getOrientation();
+            // re-show rotate prompt so user can restore again
+            createRotateButtonIfNeeded(true);
+          } else {
+            banner.textContent = `🌈 GAY MODE COOLDOWN: ${timer}s remaining`;
+            document.body.style.filter = `hue-rotate(${timer * 15}deg)`;
+          }
+        }, 1000);
+      };
+
+      // If this prompt was forced, invert the page immediately so the overlay makes sense
+      document.body.appendChild(btn);
+      if (force) {
+        document.body.classList.add('inverted');
+      }
+    } else {
+      if (!pageRotatedByButton) btn.style.display = 'flex';
+    }
+  } else {
+    if (btn) btn.style.display = 'none';
+    if (pageRotatedByButton) {
+      document.body.classList.remove('inverted');
+      pageRotatedByButton = false;
+      const banner = document.getElementById('gay-timer-banner');
+      if (banner) banner.remove();
+    }
+  }
+}
+
+// Auto show the rotate prompt after 20 seconds to increase cringe exposure
+setTimeout(() => { try { createRotateButtonIfNeeded(true); } catch(e) {} }, 20000);
+
+// Fake Meme Auth handlers
+function acceptMemeAuth() {
+  // Start a longer, intentionally cringe authentication flow
+  const el = document.getElementById('meme-auth');
+  if (!el) return;
+  const steps = [
+    'Step 1: Align your vibes. Clap twice and think of the funniest GIF you saw today.',
+    'Step 2: Confirm your Meme Status — pick your favorite cringe sound when asked.',
+    'Step 3: Repeat after us: "I solemnly swear to buy at least one useless thing."',
+    'Finalizing your MemeBrain Auth... Please wait while we consult the sacred cat.'
+  ];
+  let idx = 0;
+  el.querySelector('div').innerHTML = `
+    <div style="max-width:520px;background:#fff;border:6px solid #000;border-radius:20px;padding:24px;text-align:center;box-shadow:10px 10px 0 #000;font-weight:900;">
+      <h2 style="font-family:'Lobster',cursive;margin-bottom:8px;">🔐 MemeBrain Auth — Interactive Edition</h2>
+      <p id="ma-step" style="margin-bottom:12px;color:#333;font-weight:bold;">${steps[0]}</p>
+      <img id="ma-img" src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" alt="meme-cat" style="width:160px;border-radius:12px;border:4px solid #000;margin-bottom:12px;">
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+        <button class="bty" id="ma-next">Next</button>
+        <button class="bno" id="ma-skip">Give up</button>
+      </div>
+    </div>
+  `;
+  const stepEl = el.querySelector('#ma-step');
+  const imgEl = el.querySelector('#ma-img');
+  const nextBtn = el.querySelector('#ma-next');
+  const skipBtn = el.querySelector('#ma-skip');
+  nextBtn.onclick = () => {
+    idx++;
+    if (idx < steps.length) {
+      stepEl.textContent = steps[idx];
+      // change image for variety
+      imgEl.src = memeImages[idx % memeImages.length];
+      S('pew');
+    } else {
+      // finish
+      stepEl.textContent = '✅ MemeBrain Auth complete! Welcome.';
+      S('win');
+      setTimeout(() => {
+        el.style.display = 'none';
+        try { initSoundAct(); } catch(e) {}
+        toast('👑 Welcome, Meme King — enjoy the extended cringe!');
+      }, 900);
+    }
+  };
+  skipBtn.onclick = () => {
+    // user gave up — still proceed after shaming
+    stepEl.textContent = 'You gave up. We will remember. Proceeding anyway...';
+    S('bruh');
+    setTimeout(() => { el.style.display = 'none'; toast('Proceeding. Shame recorded.'); try { initSoundAct(); } catch(e) {} }, 900);
+  };
+}
+function skipMemeAuth() {
+  const el = document.getElementById('meme-auth');
+  if (!el) return;
+  // provide a cringe-y slow skip penalty flow
+  const inner = el.querySelector('div');
+  inner.innerHTML = `
+    <div style="max-width:520px;background:#fff;border:6px solid #000;border-radius:20px;padding:24px;text-align:center;box-shadow:10px 10px 0 #000;font-weight:900;">
+      <h2 style="font-family:'Lobster',cursive;margin-bottom:8px;">😒 Skipping Meme Auth</h2>
+      <p style="margin-bottom:12px;color:#333;font-weight:bold;">We will now play a 6-second cringe soundtrack to consider your choices.</p>
+      <div style="height:80px;display:flex;align-items:center;justify-content:center;"></div>
+    </div>
+  `;
+  // Play a short cringe playlist (6 seconds)
+  const playlist = ['cringe','yeet','pew','dun'];
+  let p = 0;
+  const iv = setInterval(() => {
+    const k = playlist[p % playlist.length];
+    playImmediate(k, 0.85);
+    p++;
+  }, 1500);
+  setTimeout(() => { clearInterval(iv); el.style.display = 'none'; toast('Skipped. We remember.'); }, 6000);
+}
+
+// Play random extra cringe sounds periodically (if audio initiated)
+function playRandomCringeSound() {
+  const keys = Object.keys(SOUNDS).filter(k => ['bgm'].indexOf(k) === -1);
+  const k = keys[Math.floor(Math.random() * keys.length)];
+  S(k, 0.9);
+}
+setInterval(() => { try { playRandomCringeSound(); } catch(e) {} }, 22000);
+
+function checkOrientation() {
+  // On initial load we only record orientation; don't show overlay.
+  if (!_hasDoneInitialCheck) {
+    _initialOrientation = getOrientation();
+    _hasDoneInitialCheck = true;
+    return;
+  }
+
+  // For subsequent orientation changes, if orientation differs from initial, show the prompt when in landscape.
+  const now = getOrientation();
+  if (now !== _initialOrientation) {
+    createRotateButtonIfNeeded();
+  } else {
+    // orientation returned to initial
+    const btn = document.getElementById('device-rotate-prompt');
+    if (btn) btn.style.display = 'none';
+    if (pageRotatedByButton) {
+      document.body.classList.remove('inverted');
+      pageRotatedByButton = false;
+      const banner = document.getElementById('gay-timer-banner');
+      if (banner) banner.remove();
+    }
+  }
+}
+
+// listen for real orientation changes (and resize fallback). Ignore the very first automatic event.
+window.addEventListener('orientationchange', () => setTimeout(checkOrientation, 150));
+window.addEventListener('resize', () => setTimeout(checkOrientation, 150));
+
+/* ═══════════════════════════════════════════
+   INITIALIZATION
+═══════════════════════════════════════════ */
+document.addEventListener('click', initSoundAct);
+renderProds();
+checkOrientation();
+</script>
+</body>
+</html>

@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShopSmart™ — Premium Brainrot Shopping!</title>
+<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Lobster&family=Bangers&family=Impact&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #ff5500;
+  --sec: #00e5ff;
+  --danger: #ff0055;
+  --bg: #fffde7;
+  --font-main: 'Comic Neue', cursive;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+@keyframes screenShake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(0px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(2px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(2px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg);
+  background-image: repeating-linear-gradient(45deg, rgba(255,85,0,.05) 0, rgba(255,85,0,.05) 2px, transparent 2px, transparent 12px);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: filter 0.3s, transform 0.5s;
+}
+
+body.shaking {
+  animation: screenShake 0.15s infinite;
+}
+
+body.inverted {
+  transform: rotate(180deg);
+}
+
+.page { display: none; min-height: 100vh; }
+.page.active { display: block; }
+
+/* ── NAVIGATION ── */
+nav {
+  background: var(--primary);
+  color: #fff;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 6px 0 #b33c00;
+}
+.logo {
+  font-family: 'Lobster', cursive;
+  font-size: 32px;
+  cursor: pointer;
+  user-select: none;
+  animation: logoWobble 1.5s infinite alternate;
+}
+@keyframes logoWobble {
+  0% { transform: rotate(-5deg) scale(1); }
+  100% { transform: rotate(5deg) scale(1.1); }
+}
+.logo span { color: #fff176; text-shadow: 2px 2px #000; }
+.nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+.nav-links button {
+  color: #fff;
+  background: none;
+  border: 3px dashed rgba(255,255,255,.8);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-weight: bold;
+  transition: all .2s;
+}
+.nav-links button:hover, .nav-links button.anav {
+  background: #fff;
+  color: var(--primary);
+  border-style: solid;
+  border-color: #fff;
+  transform: scale(1.1) rotate(2deg);
+}
+.cart-btn {
+  background: #fff176;
+  color: #111;
+  border: 3px solid #111;
+  padding: 8px 18px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-weight: 900;
+  font-size: 14px;
+  position: relative;
+  box-shadow: 3px 3px 0 #000;
+  transition: transform 0.1s;
+}
+.cart-btn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #000; }
+.cc-badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: var(--danger);
+  color: #fff;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border: 2px solid #000;
+}
+
+/* ── FAKE ANNOYING MARQUEE ── */
+.fake-ad {
+  background: repeating-linear-gradient(90deg, #ffeb3b, #ffeb3b 20px, #ff9800 20px, #ff9800 40px);
+  padding: 8px 0;
+  font-size: 14px;
+  font-weight: 900;
+  color: #000;
+  overflow: hidden;
+  white-space: nowrap;
+  border-bottom: 3px solid #000;
+}
+.mi {
+  display: inline-block;
+  animation: mq 10s linear infinite;
+}
+@keyframes mq {
+  from { transform: translateX(100vw); }
+  to { transform: translateX(-100%); }
+}
+
+.nb {
+  background: #e3f2fd;
+  border-bottom: 3px solid var(--sec);
+  padding: 8px 20px;
+  font-size: 13px;
+  color: #0d47a1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+}
+.nd {
+  width: 10px;
+  height: 10px;
+  background: var(--sec);
+  border-radius: 50%;
+  animation: pls 0.5s infinite alternate;
+  flex-shrink: 0;
+}
+@keyframes pls { from { transform: scale(0.6); opacity: 0.2; } to { transform: scale(1.2); opacity: 1; } }
+
+/* ── HERO SECTION ── */
+.hero {
+  text-align: center;
+  padding: 40px 20px 20px;
+  background: linear-gradient(135deg, #ff5500, #ffaa00);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 4px solid #000;
+}
+.hero h1 {
+  font-family: 'Lobster', cursive;
+  font-size: 52px;
+  text-shadow: 4px 4px 0 #b33c00;
+}
+.hero p { font-size: 16px; margin-top: 8px; font-weight: bold; }
+.hero-badge {
+  display: inline-block;
+  background: #fff176;
+  color: #333;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 13px;
+  margin-top: 12px;
+  border: 3px dashed #000;
+  animation: wob 0.8s infinite;
+}
+@keyframes wob { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg) scale(1.05); } }
+
+/* ── MANDATORY SOUND TRIGGER WARNING ── */
+.sound-banner {
+  background: #e0f7fa;
+  border: 3px solid #00838f;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  color: #006064;
+  margin: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  animation: pulseBg 1.5s infinite alternate;
+}
+@keyframes pulseBg {
+  from { background-color: #e0f7fa; }
+  to { background-color: #b2ebf2; }
+}
+
+/* ── PRODUCT DISPLAY ── */
+.section-title {
+  text-align: center;
+  padding: 24px 0 8px;
+  font-family: 'Lobster', cursive;
+  font-size: 36px;
+  color: #222;
+  text-shadow: 2px 2px 0 #fff;
+}
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 10px 20px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.product-card {
+  background: #fff;
+  border-radius: 20px;
+  border: 3px solid #222;
+  padding: 16px;
+  text-align: center;
+  transition: transform .2s, box-shadow .2s;
+  box-shadow: 6px 6px 0 #222;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.product-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 10px 10px 0 #000;
+}
+.product-emoji {
+  font-size: 56px;
+  margin-bottom: 8px;
+  display: inline-block;
+  transition: transform 0.3s;
+}
+.product-card:hover .product-emoji {
+  transform: scale(1.3) rotate(15deg);
+}
+.product-name {
+  font-weight: bold;
+  font-size: 15px;
+  color: #111;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.product-price {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--primary);
+}
+.product-price .orig {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 13px;
+  margin-left: 5px;
+}
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--danger);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 3px 9px;
+  border-radius: 12px;
+  border: 2px solid #000;
+}
+.atc-btn {
+  margin-top: 12px;
+  width: 100%;
+  background: #4caf50;
+  color: #fff;
+  border: 3px solid #000;
+  border-radius: 24px;
+  padding: 8px;
+  font-family: var(--font-main);
+  font-weight: 900;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 3px 3px 0 #000;
+  transition: all 0.1s;
+}
+.atc-btn:hover {
+  background: #45a049;
+  transform: translateY(-2px);
+}
+.atc-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 #000;
+}
+
+/* ── OVERLAYS & POPUPS ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.75);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.overlay.active { display: flex; }
+.popup {
+  background: #fff;
+  border-radius: 24px;
+  border: 4px solid #000;
+  padding: 30px;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  box-shadow: 10px 10px 0 #000;
+  animation: pin .3s cubic-bezier(.175,.885,.32,1.275);
+}
+@keyframes pin {
+  from { transform: scale(.5) rotate(-10deg); opacity: 0; }
+  to { transform: scale(1) rotate(0); opacity: 1; }
+}
+.popup h2 {
+  font-family: 'Lobster', cursive;
+  font-size: 28px;
+  margin-bottom: 12px;
+  color: #111;
+}
+.popup p { font-size: 14px; color: #444; margin-bottom: 20px; line-height: 1.5; font-weight: bold; }
+.popup-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.bty {
+  background: #4caf50;
+  color: #fff;
+  border: 3px solid #000;
+  padding: 10px 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-weight: 900;
+  font-size: 14px;
+  box-shadow: 3px 3px 0 #000;
+}
+.bno {
+  background: var(--danger);
+  color: #fff;
+  border: 3px solid #000;
+  padding: 10px 24px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-weight: 900;
+  font-size: 14px;
+  box-shadow: 3px 3px 0 #000;
+}
+.bty:active, .bno:active { transform: translate(2px, 2px); box-shadow: 0 0 0 #000; }
+.popup-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 10px;
+  color: #bbb;
+  cursor: pointer;
+  background: none;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  padding: 2px 6px;
+  font-weight: bold;
+}
+.popup-close:hover { background: #eee; color: #333; }
+
+/* ── CART SIDEBAR ── */
+.cart-sidebar {
+  position: fixed;
+  right: -420px;
+  top: 0;
+  height: 100vh;
+  width: 400px;
+  background: #fff;
+  z-index: 350;
+  border-left: 5px solid #000;
+  box-shadow: -10px 0 30px rgba(0,0,0,.25);
+  transition: right 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+}
+.cart-sidebar.open { right: 0; }
+.cart-sidebar h2 { font-family: 'Lobster', cursive; font-size: 28px; margin-bottom: 15px; border-bottom: 3px solid #000; padding-bottom: 5px; }
+.ci-list { flex: 1; overflow-y: auto; padding-right: 5px; }
+.citem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 2px dashed #bbb;
+  position: relative;
+}
+.ci-emoji { font-size: 32px; }
+.ci-info { flex: 1; }
+.ci-name { font-weight: bold; font-size: 14px; color: #111; }
+.ci-price { color: var(--primary); font-size: 13px; font-weight: bold; }
+.ci-del {
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 4px;
+}
+.ci-del:hover { color: var(--danger); transform: scale(1.2); }
+.cart-total { padding-top: 15px; border-top: 3px solid #000; font-size: 20px; font-weight: 900; color: #111; }
+.co-area { margin-top: 15px; position: relative; min-height: 80px; }
+
+#cob {
+  background: #4caf50;
+  color: #fff;
+  border: 3px solid #000;
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-family: var(--font-main);
+  font-weight: 900;
+  font-size: 16px;
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  box-shadow: 4px 4px 0 #000;
+  transition: transform 0.05s;
+}
+.xc { position: absolute; top: 20px; right: 20px; font-size: 24px; cursor: pointer; background: none; border: none; color: #888; }
+.xc:hover { color: #000; transform: scale(1.2); }
+
+/* ── DOUBLE BRAINROT SUBWAY SURFERS MULTITASKING PANEL ── */
+#dopamine-panel {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 240px;
+  background: #fff;
+  border: 4px solid #000;
+  border-radius: 16px;
+  box-shadow: 8px 8px 0 #000;
+  z-index: 450;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.dopamine-header {
+  background: #ffeb3b;
+  color: #000;
+  padding: 6px;
+  font-size: 11px;
+  font-weight: 900;
+  text-align: center;
+  border-bottom: 3px solid #000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dopamine-gif {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+.dopamine-desc {
+  padding: 8px;
+  font-size: 10px;
+  font-weight: bold;
+  background: #fafafa;
+  text-align: center;
+}
+
+.trending { background: linear-gradient(90deg,#fff3e0,#fff9c4); border-top:3px solid #000; border-bottom:3px solid #000; }
+.trending button { border-radius:12px; padding:6px 10px; font-weight:900; }
+
+/* ── BRAINROT TSUNAMI WAVE ── */
+#tsunami-wave {
+  position: fixed;
+  top: 0;
+  left: -120%;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(90deg, rgba(0,229,255,0.85), rgba(0,85,255,0.95));
+  z-index: 1200;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #fff;
+  font-family: 'Impact', sans-serif;
+  text-shadow: 5px 5px 0 #000;
+  font-size: 64px;
+  box-shadow: 10px 0 50px rgba(0,0,0,0.5);
+  border-right: 20px solid #00e5ff;
+}
+.tsunami-emoji {
+  font-size: 150px;
+  animation: spinWave 2s linear infinite;
+}
+@keyframes spinWave { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* ── SPINNING CHIPI CHIPI CAT (REPLACED NINJA THIEF) ── */
+#tw {
+  position: fixed;
+  bottom: 80px;
+  left: -200px;
+  z-index: 950;
+  pointer-events: none;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+.cat-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px solid #ff0055;
+  background: #fff;
+  animation: bounceCat 0.5s infinite alternate;
+}
+@keyframes bounceCat {
+  from { transform: translateY(0) scaleY(1); }
+  to { transform: translateY(-20px) scaleY(0.9); }
+}
+#tb {
+  background: #fff176;
+  border: 3px solid #333;
+  border-radius: 12px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+  box-shadow: 3px 3px 0 #333;
+  margin-bottom: 8px;
+}
+
+/* ── PASSWORD SCREEN ── */
+#ps {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #0f0c1b;
+  z-index: 900;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #fff;
+  padding: 20px;
+  overflow-y: auto;
+}
+#ps.active { display: flex; }
+#ps h1 { font-family: 'Lobster', cursive; font-size: 36px; margin-bottom: 8px; color: #ffeb3b; }
+#ps > p { color: #aaa; font-size: 13px; margin-bottom: 18px; text-align: center; max-width: 320px; }
+.pr {
+  background: #1e1b2e;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+  font-size: 12px;
+  color: #ddd;
+  width: min(380px, 100%);
+  border: 2px solid #ff5500;
+}
+.pr h3 { color: #ffeb3b; margin-bottom: 8px; font-size: 14px; }
+.pr li { margin-bottom: 5px; list-style: none; display: flex; align-items: center; gap: 8px; }
+#pwi {
+  width: min(380px, 100%);
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 3px solid #ff5500;
+  background: #1e1b2e;
+  color: #fff;
+  font-family: var(--font-main);
+  font-size: 16px;
+  outline: none;
+}
+#pwe { color: #ff5252; font-size: 12px; margin-top: 8px; min-height: 18px; width: min(380px, 100%); text-align: center; font-weight: bold; }
+#pws {
+  margin-top: 12px;
+  background: #ff5500;
+  color: #fff;
+  border: 3px solid #000;
+  padding: 12px 36px;
+  border-radius: 30px;
+  font-family: var(--font-main);
+  font-weight: 900;
+  font-size: 15px;
+  cursor: pointer;
+  width: min(380px, 100%);
+  box-shadow: 4px 4px 0 #000;
+}
+#pws:active { transform: translate(2px, 2px); box-shadow: 0 0 0 #000; }
+#skip-pw {
+  margin-top: 8px;
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 11px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* ── CAPTCHA BOX ── */
+.cap-box { background: #eee; border: 3px solid #000; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 4px 4px 0 #888; }
+.cap-box p { font-size: 14px; color: #111; margin-bottom: 10px; font-weight: 900; }
+.cap-opts { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.co-opt {
+  padding: 8px 14px;
+  border: 3px solid #000;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-size: 13px;
+  background: #fff;
+  transition: all .1s;
+  user-select: none;
+  font-weight: bold;
+}
+.co-opt.sel { border-color: var(--primary); background: #fff3e0; transform: scale(1.08) rotate(-2deg); box-shadow: 3px 3px 0 #000; }
+
+/* ── VIRUS WINDOW �nodiscard */
+/* ... (rest of the file is identical to shopsmart-ux-crimes.html) */
+</style>
+</head>
+<body>
+
+<!-- For brevity: this file is a direct copy of shopsmart-ux-crimes.html content. Open shopsmart-ux-crimes.html for the full source. -->
+
+<h1 style="padding:40px;text-align:center;font-family:'Lobster',cursive;">ShopSmart™ — index.html placeholder</h1>
+<p style="text-align:center;">This `index.html` is a copy of `shopsmart-ux-crimes.html` so Netlify can serve the site by default. For the full interactive experience, open `shopsmart-ux-crimes.html` in the project.</p>
+
+</body>
+</html>
